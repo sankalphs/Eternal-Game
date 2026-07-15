@@ -1,0 +1,70 @@
+{
+  "aggression": 0.9323163979427994,
+  "blockChance": 0.47575600261219736,
+  "reaction": 0.8,
+  "combo": 1,
+  "whiffPunish": 0.47700582592575463,
+  "antiAir": 0.6344595281611832,
+  "pressure": 0.8269045788326559,
+  "mixup": 0.013384250423018188,
+  "adaptive": 0.3210431855654874,
+  "rage": 0.47521505191498337,
+  "perfection": 1,
+  "readDelay": 0.042987138023124226,
+  "id": "genome_mqzfmfxa_4rj5",
+  "version": "1.0.0",
+  "generation": 12,
+  "source": "mutation",
+  "createdAt": "2026-06-29T16:28:28.318Z",
+  "fitness": 0.6564370378543992,
+  "rawFitness": 0.6564370378543992,
+  "fitnessHistory": [
+    0.5895818812828576,
+    0.6074780622612227,
+    0.6236134308712459,
+    0.6248174446212359,
+    0.6406826415012045,
+    0.6244214918632748,
+    0.6227739528290595,
+    0.6188896332528974,
+    0.6317664730653618,
+    0.6132477131419916,
+    0.62866869617345,
+    0.6156873133565608,
+    0.6564370378543992
+  ],
+  "narrativeTraits": [
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 1,
+      "sourceGene": "perfection"
+    },
+    {
+      "category": "aggression",
+      "description": "The warrior never retreats.",
+      "strength": 0.9323163979427994,
+      "sourceGene": "aggression"
+    },
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 0.8269045788326559,
+      "sourceGene": "pressure"
+    },
+    {
+      "category": "counter",
+      "description": "The warrior studies every mistake.",
+      "strength": 0.6509206095126506,
+      "sourceGene": "blockChance"
+    },
+    {
+      "category": "antiAir",
+      "description": "The warrior owns the sky.",
+      "strength": 0.6344595281611832,
+      "sourceGene": "antiAir"
+    }
+  ],
+  "parentA": "genome_mqzfmeko_1xm2",
+  "parentB": "genome_mqzfmeko_1ri1"
+}

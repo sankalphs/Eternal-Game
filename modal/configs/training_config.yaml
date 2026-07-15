@@ -1,0 +1,135 @@
+# =============================================================================
+# Project Eternal — Training Config
+# =============================================================================
+# Default config for fine-tuning Gemma 3 270M on the intent dataset.
+# Switch model by setting model.name (see README for the full list).
+# =============================================================================
+
+# ---------- Model ----------
+model:
+  # Family — one of: gemma, gemma3, qwen, phi, llama, mistral, tinyllama
+  family: qwen
+  # Specific model id (HuggingFace)
+  name: Qwen/Qwen2.5-1.5B-Instruct
+  # Optional: revision / branch
+  revision: main
+  # Max context length
+  max_length: 1024
+  # Trust remote code
+  trust_remote_code: false
+  # Torch dtype
+  torch_dtype: bfloat16
+  # Attention implementation
+  attn_implementation: eager
+
+# ---------- Quantization ----------
+quantization:
+  # Use 4-bit loading (QLoRA path)
+  load_in_4bit: true
+  # Quantization type: "nf4" or "fp4"
+  bnb_4bit_quant_type: nf4
+  # Double quant
+  bnb_4bit_use_double_quant: true
+  # Compute dtype
+  bnb_4bit_compute_dtype: bfloat16
+
+# ---------- LoRA ----------
+lora:
+  enabled: true
+  r: 64
+  alpha: 128
+  dropout: 0.05
+  bias: none
+  # Target modules (auto-detected if null)
+  target_modules: null
+  # Layers to transform
+  layers_to_transform: null
+  # Task type
+  task_type: CAUSAL_LM
+
+# ---------- Training ----------
+training:
+  output_dir: ./checkpoints
+  num_train_epochs: 1
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16
+  gradient_checkpointing: true
+  learning_rate: 0.00015
+  weight_decay: 0.0
+  warmup_ratio: 0.03
+  lr_scheduler_type: cosine
+  optim: paged_adamw_8bit
+  max_grad_norm: 0.3
+  group_by_length: true
+  length_column_name: length
+  logging_steps: 25
+  save_steps: 1500
+  save_total_limit: 2
+  eval_steps: 1500
+  evaluation_strategy: steps
+  report_to: none                # or "wandb"
+  bf16: true
+  fp16: false
+  tf32: true
+  seed: 42
+  data_seed: 42
+  dataloader_num_workers: 2
+  remove_unused_columns: false
+  label_names: null
+  ddp_find_unused_parameters: false
+  resume_from_checkpoint: null   # path or null
+  ignore_data_skip: false
+
+# ---------- Dataset ----------
+dataset:
+  train_path: /data/intent_10k/train.jsonl
+  validation_path: /data/intent_10k/validation.jsonl
+  test_path: /data/intent_10k/test.jsonl
+  max_samples: null              # null = use all
+  shuffle: true
+  seed: 42
+
+# ---------- Inference ----------
+inference:
+  max_new_tokens: 256
+  temperature: 0.4
+  top_p: 0.95
+  top_k: 40
+  do_sample: true
+  repetition_penalty: 1.05
+
+# ---------- Modal infrastructure ----------
+modal:
+  gpu: A100                    # A100 40GB for the full 84K-sample dataset with shorter max_length
+  cpu: 8.0
+  memory: 32768                # MiB
+  timeout: 14400               # 4 hours
+  image_python_version: 3.11
+  image_base: null             # or "debian-slim"
+  volume_name: eternal-data
+  volume_mount: /data
+
+# ---------- HuggingFace ----------
+huggingface:
+  # Token (set in env: HF_TOKEN, or supply here for local use only)
+  token: null
+  # Whether to push the final model to HF
+  push_to_hub: true
+  # Target repo id
+  hub_repo_id: null            # e.g. "YourOrg/eternal-game-designer"
+  # Hub model card metadata
+  hub_private: true
+  hub_token: null
+
+# ---------- Weights & Biases ----------
+wandb:
+  enabled: false
+  project: project-eternal
+  run_name: gemma-3-270m-intent-v1
+  entity: null
+  tags:
+    - gemma
+    - 270m
+    - intent-only
+    - v1

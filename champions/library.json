@@ -1,0 +1,985 @@
+{
+  "version": "1.0.0",
+  "exportedAt": "2026-06-29T16:32:06.073Z",
+  "baseOpponent": "Lynx",
+  "entries": {
+    "balanced": {
+      "style": "balanced",
+      "genome": {
+        "aggression": 0.9894010698702808,
+        "blockChance": 0.360580041488338,
+        "reaction": 0.6809703370715918,
+        "combo": 4,
+        "whiffPunish": 0.03827170873362169,
+        "antiAir": 0.7699933893731309,
+        "pressure": 0.9817117090965211,
+        "mixup": 0.4262694561585768,
+        "adaptive": 0.3303537806840683,
+        "rage": 0.5942497806584659,
+        "perfection": 0.9792306421777568,
+        "readDelay": 0.15690040134503416,
+        "id": "genome_mqzfl0kf_fz22",
+        "version": "1.0.0",
+        "generation": 16,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:27:21.760Z",
+        "fitness": 0.5919137433282492,
+        "rawFitness": 0.5919137433282492,
+        "fitnessHistory": [
+          0.5330623773961635,
+          0.563212532723324,
+          0.5480679013992332,
+          0.5606107696981173,
+          0.570056274896022,
+          0.5664428697716154,
+          0.5619389346484538,
+          0.562714356173889,
+          0.5555355649129479,
+          0.5694621056267228,
+          0.5658949797348445,
+          0.5557812162233565,
+          0.5710242248789176,
+          0.5553171708513562,
+          0.5815342301957949,
+          0.5680024161525298,
+          0.5919137433282492
+        ],
+        "narrativeTraits": [
+          {
+            "category": "aggression",
+            "description": "The warrior never retreats.",
+            "strength": 0.9894010698702808,
+            "sourceGene": "aggression"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.9817117090965211,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 0.9792306421777568,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "antiAir",
+            "description": "The warrior owns the sky.",
+            "strength": 0.7699933893731309,
+            "sourceGene": "antiAir"
+          }
+        ],
+        "parentA": "genome_mqzfkzg4_1lhi",
+        "parentB": "genome_mqzfkzg4_czux"
+      },
+      "weights": {
+        "winRate": 0.18,
+        "survival": 0.1,
+        "damage": 0.1,
+        "forcedAdaptation": 0.08,
+        "combatVariety": 0.08,
+        "fightDuration": 0.08,
+        "behaviourDiversity": 0.07,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.5107843517009418,
+        "defensive": 0.6346659159161886,
+        "counter": 0.44632213637441404,
+        "combo": 0.4789522121021705,
+        "risky": 0.7021216929701267,
+        "passive": 0.39951491903065794,
+        "jumper": 0.7275578001439214,
+        "roll_spam": 0.4597781932977719,
+        "beginner": 0.663141885375671,
+        "speedrunner": 0.4766278629420856,
+        "turtle": 0.6384095303946995,
+        "random": 0.4294836234524944,
+        "super_saver": 0.47905425755160047,
+        "footsies": 0.4393704220571885,
+        "whiff_punisher": 0.6704314853094657
+      },
+      "narrative": "The warrior never retreats. The warrior gives no ground. The warrior sees the opening before it forms. The warrior owns the sky."
+    },
+    "aggressive": {
+      "style": "aggressive",
+      "genome": {
+        "aggression": 0.31144937904463676,
+        "blockChance": 0.5658377347497416,
+        "reaction": 0.22635102485503944,
+        "combo": 6,
+        "whiffPunish": 0.6444047657537806,
+        "antiAir": 0.23287838086892199,
+        "pressure": 0.9563758709887361,
+        "mixup": 0.35788544930551913,
+        "adaptive": 0.2855183354472136,
+        "rage": 0.5254023049167094,
+        "perfection": 1,
+        "readDelay": 0.3,
+        "id": "genome_mqzflq3j_19ix",
+        "version": "1.0.0",
+        "generation": 14,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:27:54.847Z",
+        "fitness": 0.6949664930858084,
+        "rawFitness": 0.6949664930858084,
+        "fitnessHistory": [
+          0.6231644945764543,
+          0.6326916007130337,
+          0.672136663364952,
+          0.6376599055026168,
+          0.6432653736326501,
+          0.6691181563604407,
+          0.6583790136475065,
+          0.6544100225407944,
+          0.6685114995354524,
+          0.6694654444933187,
+          0.6629477488024503,
+          0.67496342287466,
+          0.6632488863224402,
+          0.6756673649224207,
+          0.6949664930858084
+        ],
+        "narrativeTraits": [
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 1,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.9563758709887361,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "counter",
+            "description": "The warrior studies every mistake.",
+            "strength": 0.7367475001678407,
+            "sourceGene": "blockChance"
+          },
+          {
+            "category": "punishment",
+            "description": "The warrior punishes hesitation.",
+            "strength": 0.6444047657537806,
+            "sourceGene": "whiffPunish"
+          }
+        ],
+        "parentA": "genome_mqzflowo_j5d7",
+        "parentB": "genome_mqzflowo_j5d7"
+      },
+      "weights": {
+        "winRate": 0.25,
+        "survival": 0.1,
+        "damage": 0.2,
+        "forcedAdaptation": 0.08,
+        "combatVariety": 0.08,
+        "fightDuration": 0.05,
+        "behaviourDiversity": 0.07,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.01,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.47305119219575364,
+        "defensive": 0.6481273791885206,
+        "counter": 0.41464038570531025,
+        "combo": 0.44099476473153093,
+        "risky": 0.6120488059315599,
+        "passive": 0.4033416427387965,
+        "jumper": 0.6859122602474228,
+        "roll_spam": 0.4535475491554162,
+        "beginner": 0.6169354655020828,
+        "speedrunner": 0.40025756046142086,
+        "turtle": 0.6472323945291361,
+        "random": 0.433113037058098,
+        "super_saver": 0.45071920518842407,
+        "footsies": 0.4241896615622857,
+        "whiff_punisher": 0.6439022544782276
+      },
+      "narrative": "The warrior sees the opening before it forms. The warrior gives no ground. The warrior studies every mistake. The warrior punishes hesitation."
+    },
+    "counter": {
+      "style": "counter",
+      "genome": {
+        "aggression": 0.9323163979427994,
+        "blockChance": 0.47575600261219736,
+        "reaction": 0.8,
+        "combo": 1,
+        "whiffPunish": 0.47700582592575463,
+        "antiAir": 0.6344595281611832,
+        "pressure": 0.8269045788326559,
+        "mixup": 0.013384250423018188,
+        "adaptive": 0.3210431855654874,
+        "rage": 0.47521505191498337,
+        "perfection": 1,
+        "readDelay": 0.042987138023124226,
+        "id": "genome_mqzfmfxa_4rj5",
+        "version": "1.0.0",
+        "generation": 12,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:28:28.318Z",
+        "fitness": 0.6564370378543992,
+        "rawFitness": 0.6564370378543992,
+        "fitnessHistory": [
+          0.5895818812828576,
+          0.6074780622612227,
+          0.6236134308712459,
+          0.6248174446212359,
+          0.6406826415012045,
+          0.6244214918632748,
+          0.6227739528290595,
+          0.6188896332528974,
+          0.6317664730653618,
+          0.6132477131419916,
+          0.62866869617345,
+          0.6156873133565608,
+          0.6564370378543992
+        ],
+        "narrativeTraits": [
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 1,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "aggression",
+            "description": "The warrior never retreats.",
+            "strength": 0.9323163979427994,
+            "sourceGene": "aggression"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.8269045788326559,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "counter",
+            "description": "The warrior studies every mistake.",
+            "strength": 0.6509206095126506,
+            "sourceGene": "blockChance"
+          },
+          {
+            "category": "antiAir",
+            "description": "The warrior owns the sky.",
+            "strength": 0.6344595281611832,
+            "sourceGene": "antiAir"
+          }
+        ],
+        "parentA": "genome_mqzfmeko_1xm2",
+        "parentB": "genome_mqzfmeko_1ri1"
+      },
+      "weights": {
+        "winRate": 0.18,
+        "survival": 0.1,
+        "damage": 0.1,
+        "forcedAdaptation": 0.18,
+        "combatVariety": 0.05,
+        "fightDuration": 0.08,
+        "behaviourDiversity": 0.07,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.1,
+        "closeFinishBonus": 0.12,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.4325865499614377,
+        "defensive": 0.6219530687260804,
+        "counter": 0.42125780779797467,
+        "combo": 0.4583933660541784,
+        "risky": 0.6556912664274458,
+        "passive": 0.41570513507693185,
+        "jumper": 0.6838734941863516,
+        "roll_spam": 0.4282512968368842,
+        "beginner": 0.6162937517060103,
+        "speedrunner": 0.488081154853005,
+        "turtle": 0.6169960026326218,
+        "random": 0.631556830387442,
+        "super_saver": 0.4324525219082216,
+        "footsies": 0.424961954388515,
+        "whiff_punisher": 0.6369848363971474
+      },
+      "narrative": "The warrior sees the opening before it forms. The warrior never retreats. The warrior gives no ground. The warrior studies every mistake. The warrior owns the sky."
+    },
+    "patient": {
+      "style": "patient",
+      "genome": {
+        "aggression": 0.6564919502272413,
+        "blockChance": 0.9083182174004445,
+        "reaction": 0.29455566416887413,
+        "combo": 1,
+        "whiffPunish": 0.6258321140436885,
+        "antiAir": 0.015231316899660615,
+        "pressure": 0.9800060987703128,
+        "mixup": 0.9317358659923227,
+        "adaptive": 0.9693976938295383,
+        "rage": 0.867891875177309,
+        "perfection": 1,
+        "readDelay": 0.19402692175311098,
+        "id": "genome_mqzfnjah_7ht4",
+        "version": "1.0.0",
+        "generation": 16,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:29:19.337Z",
+        "fitness": 0.6871336888400404,
+        "rawFitness": 0.6871336888400404,
+        "fitnessHistory": [
+          0.603193675071905,
+          0.6434317519296672,
+          0.6314901884465998,
+          0.6429130162010032,
+          0.6500288997570735,
+          0.6453007091461489,
+          0.6280315822476593,
+          0.6340987859192772,
+          0.650317451438435,
+          0.6700998793069034,
+          0.6522642992225439,
+          0.649241295713819,
+          0.6481310265891661,
+          0.6348429086986068,
+          0.6468543401083295,
+          0.6615451050536649,
+          0.6871336888400404
+        ],
+        "narrativeTraits": [
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 1,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.9800060987703128,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "adaptation",
+            "description": "The warrior learns.",
+            "strength": 0.9693976938295383,
+            "sourceGene": "adaptive"
+          },
+          {
+            "category": "mindGames",
+            "description": "The warrior strikes from every angle.",
+            "strength": 0.9317358659923227,
+            "sourceGene": "mixup"
+          },
+          {
+            "category": "counter",
+            "description": "The warrior studies every mistake.",
+            "strength": 0.8447167771480443,
+            "sourceGene": "blockChance"
+          },
+          {
+            "category": "punishment",
+            "description": "The warrior punishes hesitation.",
+            "strength": 0.6258321140436885,
+            "sourceGene": "whiffPunish"
+          }
+        ],
+        "parentA": "genome_mqzfnig6_hkaz",
+        "parentB": "genome_mqzfnig6_hkaz"
+      },
+      "weights": {
+        "winRate": 0.18,
+        "survival": 0.2,
+        "damage": 0.1,
+        "forcedAdaptation": 0.08,
+        "combatVariety": 0.08,
+        "fightDuration": 0.08,
+        "behaviourDiversity": 0.07,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.15,
+        "campingPenalty": 0.01,
+        "infiniteBlockPenalty": 0.01,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.473149645255977,
+        "defensive": 0.6461277775357029,
+        "counter": 0.4276866803574376,
+        "combo": 0.45502296308278684,
+        "risky": 0.5019745695776341,
+        "passive": 0.6278498513338624,
+        "jumper": 0.7193518741217153,
+        "roll_spam": 0.467363905782627,
+        "beginner": 0.6564549133428432,
+        "speedrunner": 0.4452724590648054,
+        "turtle": 0.6461296700625283,
+        "random": 0.4677310556719404,
+        "super_saver": 0.4459713607207716,
+        "footsies": 0.44520947459800825,
+        "whiff_punisher": 0.644245081167202
+      },
+      "narrative": "The warrior sees the opening before it forms. The warrior gives no ground. The warrior learns. The warrior strikes from every angle. The warrior studies every mistake. The warrior punishes hesitation."
+    },
+    "rushdown": {
+      "style": "rushdown",
+      "genome": {
+        "aggression": 0.653492283716005,
+        "blockChance": 0.7007257218703506,
+        "reaction": 0.30592475447810313,
+        "combo": 5,
+        "whiffPunish": 0.04786470842652735,
+        "antiAir": 0.07673123832673028,
+        "pressure": 0.93212927666121,
+        "mixup": 0,
+        "adaptive": 0.08762716267379049,
+        "rage": 0.4311539902628728,
+        "perfection": 1,
+        "readDelay": 0.18753895147847582,
+        "id": "genome_mqzfog7d_acfv",
+        "version": "1.0.0",
+        "generation": 15,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:30:01.993Z",
+        "fitness": 0.6419381088080384,
+        "rawFitness": 0.6419381088080384,
+        "fitnessHistory": [
+          0.5634133343716806,
+          0.5423552148351674,
+          0.5826218785004669,
+          0.5739533696613905,
+          0.5795869891818491,
+          0.6017915319557586,
+          0.6098953695973779,
+          0.6093073101575043,
+          0.611275513524374,
+          0.6003547199654805,
+          0.6246961769107856,
+          0.6186462400922065,
+          0.6198577782629784,
+          0.6316760870994996,
+          0.6103166133450288,
+          0.6419381088080384
+        ],
+        "narrativeTraits": [
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 1,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.93212927666121,
+            "sourceGene": "pressure"
+          }
+        ],
+        "parentA": "genome_mqzfoe6h_7b4f",
+        "parentB": "genome_mqzfoe6h_7b4f"
+      },
+      "weights": {
+        "winRate": 0.22,
+        "survival": 0.1,
+        "damage": 0.18,
+        "forcedAdaptation": 0.08,
+        "combatVariety": 0.08,
+        "fightDuration": 0.05,
+        "behaviourDiversity": 0.07,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.02,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.47512715508632924,
+        "defensive": 0.6425092505287727,
+        "counter": 0.4021443605576137,
+        "combo": 0.44853249834886044,
+        "risky": 0.6523699457684845,
+        "passive": 0.38605230801902296,
+        "jumper": 0.7003168482288924,
+        "roll_spam": 0.6587103926847496,
+        "beginner": 0.6226792355171152,
+        "speedrunner": 0.4675855166895938,
+        "turtle": 0.6427874110632417,
+        "random": 0.44853999304572695,
+        "super_saver": 0.42854763750179103,
+        "footsies": 0.47985969623818814,
+        "whiff_punisher": 0.6556108789034478
+      },
+      "narrative": "The warrior sees the opening before it forms. The warrior gives no ground."
+    },
+    "mindGame": {
+      "style": "mindGame",
+      "genome": {
+        "aggression": 1,
+        "blockChance": 0.9142018806128024,
+        "reaction": 0.12928098148708073,
+        "combo": 3,
+        "whiffPunish": 0.369775990784729,
+        "antiAir": 0.4746774220761751,
+        "pressure": 1,
+        "mixup": 0.30614568769227773,
+        "adaptive": 0.9441928167112281,
+        "rage": 0.769659423752179,
+        "perfection": 0.6261833101858146,
+        "readDelay": 0.1745145135333964,
+        "id": "genome_mqzfp3b7_ladt",
+        "version": "1.0.0",
+        "generation": 10,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:30:31.939Z",
+        "fitness": 0.869456799771002,
+        "rawFitness": 0.869456799771002,
+        "fitnessHistory": [
+          0.7916246005406983,
+          0.8407830750377724,
+          0.8426897532046717,
+          0.833662463765862,
+          0.8352305298796077,
+          0.8278067928409715,
+          0.8321669459304001,
+          0.8528363293942341,
+          0.8575001760537211,
+          0.857009876164943,
+          0.869456799771002
+        ],
+        "narrativeTraits": [
+          {
+            "category": "aggression",
+            "description": "The warrior never retreats.",
+            "strength": 1,
+            "sourceGene": "aggression"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 1,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "adaptation",
+            "description": "The warrior learns.",
+            "strength": 0.9441928167112281,
+            "sourceGene": "adaptive"
+          },
+          {
+            "category": "counter",
+            "description": "The warrior studies every mistake.",
+            "strength": 0.6367203938611153,
+            "sourceGene": "blockChance"
+          },
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 0.6261833101858146,
+            "sourceGene": "perfection"
+          }
+        ],
+        "parentA": "genome_mqzfp1px_gfbq",
+        "parentB": "genome_mqzfp1px_jd3t"
+      },
+      "weights": {
+        "winRate": 0.18,
+        "survival": 0.1,
+        "damage": 0.1,
+        "forcedAdaptation": 0.1,
+        "combatVariety": 0.15,
+        "fightDuration": 0.08,
+        "behaviourDiversity": 0.15,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.2,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.4604182831598631,
+        "defensive": 0.6415963044354643,
+        "counter": 0.47043523921049646,
+        "combo": 0.459707878713483,
+        "risky": 0.7332897274943063,
+        "passive": 0.5995810998556989,
+        "jumper": 0.724370521377566,
+        "roll_spam": 0.43278485534875216,
+        "beginner": 0.664991308276666,
+        "speedrunner": 0.45469175727416844,
+        "turtle": 0.6396523393738746,
+        "random": 0.6604724846770978,
+        "super_saver": 0.4740857590947059,
+        "footsies": 0.4849806928161241,
+        "whiff_punisher": 0.6899593671082569
+      },
+      "narrative": "The warrior never retreats. The warrior gives no ground. The warrior learns. The warrior studies every mistake. The warrior sees the opening before it forms."
+    },
+    "adaptive": {
+      "style": "adaptive",
+      "genome": {
+        "aggression": 0.7260158921792952,
+        "blockChance": 0.86942852081695,
+        "reaction": 0.4049265616648149,
+        "combo": 1,
+        "whiffPunish": 0.972034215480277,
+        "antiAir": 0.934844989680069,
+        "pressure": 0.9635768091930106,
+        "mixup": 0.8821798238484446,
+        "adaptive": 0.018971520893800706,
+        "rage": 0.764169025252025,
+        "perfection": 1,
+        "readDelay": 0.1971583663812953,
+        "id": "genome_mqzfpn5g_88zy",
+        "version": "1.0.0",
+        "generation": 5,
+        "source": "mutation",
+        "createdAt": "2026-06-29T16:30:57.652Z",
+        "fitness": 0.6575996751771113,
+        "rawFitness": 0.6575996751771113,
+        "fitnessHistory": [
+          0.6099757704745642,
+          0.6281085129938123,
+          0.6255438599957817,
+          0.6357437493312983,
+          0.6387000199509852,
+          0.6575996751771113
+        ],
+        "narrativeTraits": [
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 1,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "punishment",
+            "description": "The warrior punishes hesitation.",
+            "strength": 0.972034215480277,
+            "sourceGene": "whiffPunish"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.9635768091930106,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "counter",
+            "description": "The warrior studies every mistake.",
+            "strength": 0.947154245432409,
+            "sourceGene": "blockChance"
+          },
+          {
+            "category": "antiAir",
+            "description": "The warrior owns the sky.",
+            "strength": 0.934844989680069,
+            "sourceGene": "antiAir"
+          },
+          {
+            "category": "mindGames",
+            "description": "The warrior strikes from every angle.",
+            "strength": 0.8821798238484446,
+            "sourceGene": "mixup"
+          },
+          {
+            "category": "aggression",
+            "description": "The warrior never retreats.",
+            "strength": 0.7260158921792952,
+            "sourceGene": "aggression"
+          }
+        ],
+        "parentA": "genome_mqzfplys_156n",
+        "parentB": "genome_mqzfplys_156n"
+      },
+      "weights": {
+        "winRate": 0.1,
+        "survival": 0.1,
+        "damage": 0.1,
+        "forcedAdaptation": 0.2,
+        "combatVariety": 0.12,
+        "fightDuration": 0.08,
+        "behaviourDiversity": 0.12,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.4558205771983997,
+        "defensive": 0.6411131928483108,
+        "counter": 0.4215456169208432,
+        "combo": 0.4866651176506576,
+        "risky": 0.6381762800049298,
+        "passive": 0.6347306958699378,
+        "jumper": 0.7163041779423553,
+        "roll_spam": 0.4619633296966235,
+        "beginner": 0.6610895864927825,
+        "speedrunner": 0.49332918326807457,
+        "turtle": 0.6493296480974003,
+        "random": 0.4718340082064802,
+        "super_saver": 0.45721151731684934,
+        "footsies": 0.4247140743891902,
+        "whiff_punisher": 0.6368531120730638
+      },
+      "narrative": "The warrior sees the opening before it forms. The warrior punishes hesitation. The warrior gives no ground. The warrior studies every mistake. The warrior owns the sky. The warrior strikes from every angle. The warrior never retreats."
+    },
+    "zoner": {
+      "style": "zoner",
+      "genome": {
+        "aggression": 0.866261012156972,
+        "blockChance": 0.6714835759826987,
+        "reaction": 0.8,
+        "combo": 3,
+        "whiffPunish": 0.4123991039596867,
+        "antiAir": 1,
+        "pressure": 1,
+        "mixup": 0.3114685928142395,
+        "adaptive": 0.20630681304367254,
+        "rage": 0.468622833406691,
+        "perfection": 0.676928543801078,
+        "readDelay": 0.17051209245209056,
+        "id": "genome_mqzfqd85_huut",
+        "version": "1.0.0",
+        "generation": 19,
+        "source": "elitism",
+        "createdAt": "2026-06-29T16:31:31.445Z",
+        "fitness": 0.731055753519433,
+        "rawFitness": 0.731055753519433,
+        "fitnessHistory": [
+          0.6756216747100797,
+          0.6761442957928518,
+          0.6756663794556182,
+          0.7085658455964112,
+          0.6929892621916262,
+          0.6943929421092573,
+          0.7147439752718562,
+          0.7085978296637837,
+          0.7122786706014025,
+          0.6902912849397803,
+          0.6893718146794467,
+          0.7250699635777831,
+          0.7033530411734934,
+          0.7091474574577096,
+          0.7069776640612384,
+          0.7073885464312707,
+          0.7098991210870395,
+          0.7075657439856067,
+          0.7200243178068664,
+          0.731055753519433
+        ],
+        "narrativeTraits": [
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 1,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "antiAir",
+            "description": "The warrior owns the sky.",
+            "strength": 1,
+            "sourceGene": "antiAir"
+          },
+          {
+            "category": "aggression",
+            "description": "The warrior never retreats.",
+            "strength": 0.866261012156972,
+            "sourceGene": "aggression"
+          },
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 0.676928543801078,
+            "sourceGene": "perfection"
+          }
+        ],
+        "parentA": "genome_mqzfqbhm_3ujb",
+        "parentB": "genome_mqzfqbhm_gdil"
+      },
+      "weights": {
+        "winRate": 0.18,
+        "survival": 0.1,
+        "damage": 0.1,
+        "forcedAdaptation": 0.08,
+        "combatVariety": 0.1,
+        "fightDuration": 0.08,
+        "behaviourDiversity": 0.1,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.2,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.03,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.447353917011337,
+        "defensive": 0.6441383323720578,
+        "counter": 0.47536955512332013,
+        "combo": 0.4643473545659693,
+        "risky": 0.666676321020474,
+        "passive": 0.4030753244183079,
+        "jumper": 0.729705726106372,
+        "roll_spam": 0.4390638152358923,
+        "beginner": 0.6509309783279171,
+        "speedrunner": 0.419325310677338,
+        "turtle": 0.6471588602729691,
+        "random": 0.4576029730660944,
+        "super_saver": 0.4654328701728537,
+        "footsies": 0.4361097234088846,
+        "whiff_punisher": 0.6592847318602455
+      },
+      "narrative": "The warrior gives no ground. The warrior owns the sky. The warrior never retreats. The warrior sees the opening before it forms."
+    },
+    "pressure": {
+      "style": "pressure",
+      "genome": {
+        "aggression": 0.9122948525136872,
+        "blockChance": 0.8109864018332719,
+        "reaction": 0.42475009864302987,
+        "combo": 1,
+        "whiffPunish": 0.2587108341152671,
+        "antiAir": 0.09552533266098069,
+        "pressure": 0.9651554180775566,
+        "mixup": 0.6390764416750958,
+        "adaptive": 0.859575789105933,
+        "rage": 0.4404919580042909,
+        "perfection": 1,
+        "readDelay": 0.1932343819665573,
+        "id": "genome_mqzfqvo3_185k",
+        "version": "1.0.0",
+        "generation": 16,
+        "source": "elitism",
+        "createdAt": "2026-06-29T16:31:55.347Z",
+        "fitness": 0.6352826241704717,
+        "rawFitness": 0.6352826241704717,
+        "fitnessHistory": [
+          0.6051362259355274,
+          0.6105208558715778,
+          0.5923208372491858,
+          0.6047107513558284,
+          0.5947305323720056,
+          0.6045100335444524,
+          0.6155265186695675,
+          0.6030498093661965,
+          0.6225984222149158,
+          0.6190823833862665,
+          0.6117193632817497,
+          0.6042767457711256,
+          0.6319881229352157,
+          0.6219436129778507,
+          0.6237106037838837,
+          0.6211986766345513,
+          0.6352826241704717
+        ],
+        "narrativeTraits": [
+          {
+            "category": "perfection",
+            "description": "The warrior sees the opening before it forms.",
+            "strength": 1,
+            "sourceGene": "perfection"
+          },
+          {
+            "category": "pressure",
+            "description": "The warrior gives no ground.",
+            "strength": 0.9651554180775566,
+            "sourceGene": "pressure"
+          },
+          {
+            "category": "aggression",
+            "description": "The warrior never retreats.",
+            "strength": 0.9122948525136872,
+            "sourceGene": "aggression"
+          },
+          {
+            "category": "adaptation",
+            "description": "The warrior learns.",
+            "strength": 0.859575789105933,
+            "sourceGene": "adaptive"
+          },
+          {
+            "category": "counter",
+            "description": "The warrior studies every mistake.",
+            "strength": 0.689899078649513,
+            "sourceGene": "blockChance"
+          }
+        ],
+        "parentA": "genome_mqzfqtsg_7bb7",
+        "parentB": "genome_mqzfqtsh_6qi6"
+      },
+      "weights": {
+        "winRate": 0.2,
+        "survival": 0.1,
+        "damage": 0.15,
+        "forcedAdaptation": 0.1,
+        "combatVariety": 0.08,
+        "fightDuration": 0.05,
+        "behaviourDiversity": 0.07,
+        "comboDiversity": 0.05,
+        "spacingDiversity": 0.05,
+        "unpredictability": 0.06,
+        "closeFinishBonus": 0.05,
+        "campingPenalty": 0.04,
+        "infiniteBlockPenalty": 0.04,
+        "infiniteAggressionPenalty": 0.01,
+        "repeatedMovePenalty": 0.03,
+        "timeoutPenalty": 0.02
+      },
+      "benchmarks": {
+        "aggressive": 0.4564746534476234,
+        "defensive": 0.6350726899786239,
+        "counter": 0.5030774476560539,
+        "combo": 0.43343391270237563,
+        "risky": 0.6766697237094608,
+        "passive": 0.6122826994520052,
+        "jumper": 0.7220056120323233,
+        "roll_spam": 0.6601282183477634,
+        "beginner": 0.6537686943278719,
+        "speedrunner": 0.4755887672554672,
+        "turtle": 0.6420362014623671,
+        "random": 0.49640824440012205,
+        "super_saver": 0.4412806691474711,
+        "footsies": 0.46563623102447405,
+        "whiff_punisher": 0.6718691930289367
+      },
+      "narrative": "The warrior sees the opening before it forms. The warrior gives no ground. The warrior never retreats. The warrior learns. The warrior studies every mistake."
+    }
+  }
+}

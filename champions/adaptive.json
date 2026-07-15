@@ -1,0 +1,75 @@
+{
+  "aggression": 0.7260158921792952,
+  "blockChance": 0.86942852081695,
+  "reaction": 0.4049265616648149,
+  "combo": 1,
+  "whiffPunish": 0.972034215480277,
+  "antiAir": 0.934844989680069,
+  "pressure": 0.9635768091930106,
+  "mixup": 0.8821798238484446,
+  "adaptive": 0.018971520893800706,
+  "rage": 0.764169025252025,
+  "perfection": 1,
+  "readDelay": 0.1971583663812953,
+  "id": "genome_mqzfpn5g_88zy",
+  "version": "1.0.0",
+  "generation": 5,
+  "source": "mutation",
+  "createdAt": "2026-06-29T16:30:57.652Z",
+  "fitness": 0.6575996751771113,
+  "rawFitness": 0.6575996751771113,
+  "fitnessHistory": [
+    0.6099757704745642,
+    0.6281085129938123,
+    0.6255438599957817,
+    0.6357437493312983,
+    0.6387000199509852,
+    0.6575996751771113
+  ],
+  "narrativeTraits": [
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 1,
+      "sourceGene": "perfection"
+    },
+    {
+      "category": "punishment",
+      "description": "The warrior punishes hesitation.",
+      "strength": 0.972034215480277,
+      "sourceGene": "whiffPunish"
+    },
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 0.9635768091930106,
+      "sourceGene": "pressure"
+    },
+    {
+      "category": "counter",
+      "description": "The warrior studies every mistake.",
+      "strength": 0.947154245432409,
+      "sourceGene": "blockChance"
+    },
+    {
+      "category": "antiAir",
+      "description": "The warrior owns the sky.",
+      "strength": 0.934844989680069,
+      "sourceGene": "antiAir"
+    },
+    {
+      "category": "mindGames",
+      "description": "The warrior strikes from every angle.",
+      "strength": 0.8821798238484446,
+      "sourceGene": "mixup"
+    },
+    {
+      "category": "aggression",
+      "description": "The warrior never retreats.",
+      "strength": 0.7260158921792952,
+      "sourceGene": "aggression"
+    }
+  ],
+  "parentA": "genome_mqzfplys_156n",
+  "parentB": "genome_mqzfplys_156n"
+}

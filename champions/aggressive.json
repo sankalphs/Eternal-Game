@@ -1,0 +1,66 @@
+{
+  "aggression": 0.31144937904463676,
+  "blockChance": 0.5658377347497416,
+  "reaction": 0.22635102485503944,
+  "combo": 6,
+  "whiffPunish": 0.6444047657537806,
+  "antiAir": 0.23287838086892199,
+  "pressure": 0.9563758709887361,
+  "mixup": 0.35788544930551913,
+  "adaptive": 0.2855183354472136,
+  "rage": 0.5254023049167094,
+  "perfection": 1,
+  "readDelay": 0.3,
+  "id": "genome_mqzflq3j_19ix",
+  "version": "1.0.0",
+  "generation": 14,
+  "source": "mutation",
+  "createdAt": "2026-06-29T16:27:54.847Z",
+  "fitness": 0.6949664930858084,
+  "rawFitness": 0.6949664930858084,
+  "fitnessHistory": [
+    0.6231644945764543,
+    0.6326916007130337,
+    0.672136663364952,
+    0.6376599055026168,
+    0.6432653736326501,
+    0.6691181563604407,
+    0.6583790136475065,
+    0.6544100225407944,
+    0.6685114995354524,
+    0.6694654444933187,
+    0.6629477488024503,
+    0.67496342287466,
+    0.6632488863224402,
+    0.6756673649224207,
+    0.6949664930858084
+  ],
+  "narrativeTraits": [
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 1,
+      "sourceGene": "perfection"
+    },
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 0.9563758709887361,
+      "sourceGene": "pressure"
+    },
+    {
+      "category": "counter",
+      "description": "The warrior studies every mistake.",
+      "strength": 0.7367475001678407,
+      "sourceGene": "blockChance"
+    },
+    {
+      "category": "punishment",
+      "description": "The warrior punishes hesitation.",
+      "strength": 0.6444047657537806,
+      "sourceGene": "whiffPunish"
+    }
+  ],
+  "parentA": "genome_mqzflowo_j5d7",
+  "parentB": "genome_mqzflowo_j5d7"
+}

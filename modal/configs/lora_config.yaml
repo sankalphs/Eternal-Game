@@ -1,0 +1,52 @@
+# =============================================================================
+# Project Eternal — LoRA Config
+# =============================================================================
+# Standalone LoRA config (referenced separately by the training script
+# for clarity and easy diffing across runs).
+# =============================================================================
+
+lora:
+  # Enable LoRA. Set false to fall back to full fine-tuning.
+  enabled: true
+  # Rank — higher = more capacity, more memory.
+  r: 64
+  # Alpha — typically 2x rank.
+  alpha: 128
+  # Dropout — small for tiny models, larger for big ones.
+  dropout: 0.05
+  # Bias — "none" | "all" | "lora_only"
+  bias: none
+  # Task type
+  task_type: CAUSAL_LM
+
+  # Target modules. If null, the trainer auto-detects based on the
+  # model architecture. Common values:
+  #   gemma/qwen/llama/mistral: ["q_proj", "k_proj", "v_proj", "o_proj",
+  #                                "gate_proj", "up_proj", "down_proj"]
+  #   phi: ["qkv_proj", "o_proj", "gate_up_proj", "down_proj"]
+  target_modules: null
+
+  # Layers to transform (null = all)
+  layers_to_transform: null
+
+  # Modules to save (full modules to keep in addition to LoRA adapters)
+  modules_to_save: null
+
+# QLoRA (4-bit + LoRA) — preferred for tiny GPUs
+qlora:
+  enabled: true
+  # Quantization
+  load_in_4bit: true
+  bnb_4bit_quant_type: nf4       # nf4 or fp4
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_compute_dtype: bfloat16
+
+# Full fine-tuning (alternative to LoRA)
+full_ft:
+  enabled: false
+  # Optimizer
+  optim: adamw_torch
+  # Learning rate (much lower than LoRA)
+  learning_rate: 0.00002
+  # Weight decay
+  weight_decay: 0.0

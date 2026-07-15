@@ -1,0 +1,80 @@
+{
+  "aggression": 0.6564919502272413,
+  "blockChance": 0.9083182174004445,
+  "reaction": 0.29455566416887413,
+  "combo": 1,
+  "whiffPunish": 0.6258321140436885,
+  "antiAir": 0.015231316899660615,
+  "pressure": 0.9800060987703128,
+  "mixup": 0.9317358659923227,
+  "adaptive": 0.9693976938295383,
+  "rage": 0.867891875177309,
+  "perfection": 1,
+  "readDelay": 0.19402692175311098,
+  "id": "genome_mqzfnjah_7ht4",
+  "version": "1.0.0",
+  "generation": 16,
+  "source": "mutation",
+  "createdAt": "2026-06-29T16:29:19.337Z",
+  "fitness": 0.6871336888400404,
+  "rawFitness": 0.6871336888400404,
+  "fitnessHistory": [
+    0.603193675071905,
+    0.6434317519296672,
+    0.6314901884465998,
+    0.6429130162010032,
+    0.6500288997570735,
+    0.6453007091461489,
+    0.6280315822476593,
+    0.6340987859192772,
+    0.650317451438435,
+    0.6700998793069034,
+    0.6522642992225439,
+    0.649241295713819,
+    0.6481310265891661,
+    0.6348429086986068,
+    0.6468543401083295,
+    0.6615451050536649,
+    0.6871336888400404
+  ],
+  "narrativeTraits": [
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 1,
+      "sourceGene": "perfection"
+    },
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 0.9800060987703128,
+      "sourceGene": "pressure"
+    },
+    {
+      "category": "adaptation",
+      "description": "The warrior learns.",
+      "strength": 0.9693976938295383,
+      "sourceGene": "adaptive"
+    },
+    {
+      "category": "mindGames",
+      "description": "The warrior strikes from every angle.",
+      "strength": 0.9317358659923227,
+      "sourceGene": "mixup"
+    },
+    {
+      "category": "counter",
+      "description": "The warrior studies every mistake.",
+      "strength": 0.8447167771480443,
+      "sourceGene": "blockChance"
+    },
+    {
+      "category": "punishment",
+      "description": "The warrior punishes hesitation.",
+      "strength": 0.6258321140436885,
+      "sourceGene": "whiffPunish"
+    }
+  ],
+  "parentA": "genome_mqzfnig6_hkaz",
+  "parentB": "genome_mqzfnig6_hkaz"
+}

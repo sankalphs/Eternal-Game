@@ -1,0 +1,71 @@
+{
+  "aggression": 0.866261012156972,
+  "blockChance": 0.6714835759826987,
+  "reaction": 0.8,
+  "combo": 3,
+  "whiffPunish": 0.4123991039596867,
+  "antiAir": 1,
+  "pressure": 1,
+  "mixup": 0.3114685928142395,
+  "adaptive": 0.20630681304367254,
+  "rage": 0.468622833406691,
+  "perfection": 0.676928543801078,
+  "readDelay": 0.17051209245209056,
+  "id": "genome_mqzfqd85_huut",
+  "version": "1.0.0",
+  "generation": 19,
+  "source": "elitism",
+  "createdAt": "2026-06-29T16:31:31.445Z",
+  "fitness": 0.731055753519433,
+  "rawFitness": 0.731055753519433,
+  "fitnessHistory": [
+    0.6756216747100797,
+    0.6761442957928518,
+    0.6756663794556182,
+    0.7085658455964112,
+    0.6929892621916262,
+    0.6943929421092573,
+    0.7147439752718562,
+    0.7085978296637837,
+    0.7122786706014025,
+    0.6902912849397803,
+    0.6893718146794467,
+    0.7250699635777831,
+    0.7033530411734934,
+    0.7091474574577096,
+    0.7069776640612384,
+    0.7073885464312707,
+    0.7098991210870395,
+    0.7075657439856067,
+    0.7200243178068664,
+    0.731055753519433
+  ],
+  "narrativeTraits": [
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 1,
+      "sourceGene": "pressure"
+    },
+    {
+      "category": "antiAir",
+      "description": "The warrior owns the sky.",
+      "strength": 1,
+      "sourceGene": "antiAir"
+    },
+    {
+      "category": "aggression",
+      "description": "The warrior never retreats.",
+      "strength": 0.866261012156972,
+      "sourceGene": "aggression"
+    },
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 0.676928543801078,
+      "sourceGene": "perfection"
+    }
+  ],
+  "parentA": "genome_mqzfqbhm_3ujb",
+  "parentB": "genome_mqzfqbhm_gdil"
+}

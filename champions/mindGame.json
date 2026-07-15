@@ -1,0 +1,68 @@
+{
+  "aggression": 1,
+  "blockChance": 0.9142018806128024,
+  "reaction": 0.12928098148708073,
+  "combo": 3,
+  "whiffPunish": 0.369775990784729,
+  "antiAir": 0.4746774220761751,
+  "pressure": 1,
+  "mixup": 0.30614568769227773,
+  "adaptive": 0.9441928167112281,
+  "rage": 0.769659423752179,
+  "perfection": 0.6261833101858146,
+  "readDelay": 0.1745145135333964,
+  "id": "genome_mqzfp3b7_ladt",
+  "version": "1.0.0",
+  "generation": 10,
+  "source": "mutation",
+  "createdAt": "2026-06-29T16:30:31.939Z",
+  "fitness": 0.869456799771002,
+  "rawFitness": 0.869456799771002,
+  "fitnessHistory": [
+    0.7916246005406983,
+    0.8407830750377724,
+    0.8426897532046717,
+    0.833662463765862,
+    0.8352305298796077,
+    0.8278067928409715,
+    0.8321669459304001,
+    0.8528363293942341,
+    0.8575001760537211,
+    0.857009876164943,
+    0.869456799771002
+  ],
+  "narrativeTraits": [
+    {
+      "category": "aggression",
+      "description": "The warrior never retreats.",
+      "strength": 1,
+      "sourceGene": "aggression"
+    },
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 1,
+      "sourceGene": "pressure"
+    },
+    {
+      "category": "adaptation",
+      "description": "The warrior learns.",
+      "strength": 0.9441928167112281,
+      "sourceGene": "adaptive"
+    },
+    {
+      "category": "counter",
+      "description": "The warrior studies every mistake.",
+      "strength": 0.6367203938611153,
+      "sourceGene": "blockChance"
+    },
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 0.6261833101858146,
+      "sourceGene": "perfection"
+    }
+  ],
+  "parentA": "genome_mqzfp1px_gfbq",
+  "parentB": "genome_mqzfp1px_jd3t"
+}
