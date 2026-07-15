@@ -52,11 +52,6 @@ The build pairs a playable 2D fighting game with an AI research and tooling stac
 - Opponents have authored combat traits such as aggression, block chance, reaction speed, combo length, whiff punish, anti-air, pressure, mixup, adaptation, rage, and perfection.
 - Habit tracking responds to repeated player openings such as blocking, jumping, and attacking patterns (`directorJournal.ts`'s `computeAIDebrief`).
 
-### Director
-
-- During combat the game applies a Director plan from `director/DirectorRuntime.ts`, built from a fixed chapter→intent table and a per-intent parameter table.
-- The chapter index is the opponent's position in the roster. Each intent maps to weather, lighting, camera profile, hazards (slip / chip / darkness), and a confidence-blended combat tuning applied on top of the authored opponent (or GA genome) traits.
-- The plan is derived from rules rather than a live model call, so fights stay consistent and offline-friendly; every match uses `applyOfflineDirector` / `applyDirectorPlan` (the "Classic Director").
 
 ### Post-match analysis + genome selection (the adaptive loop)
 
@@ -85,15 +80,6 @@ Wired and rendering in the running game:
 
 Not mounted in the current build (defined but never imported): `EvolutionPanel.tsx`, `DirectorActionVisualizer.tsx`, `DirectorIntentCard.tsx`.
 
-### Research and tooling (offline, not gameplay)
-
-These are real, runnable modules but are **not** part of the in-browser game. They are used by `scripts/*.ts` and research harnesses to train/validate models and genomes:
-
-- Genetic-algorithm/evolution modules (`src/lib/game/evolution/`) for creating and freezing champion genomes, self-play, convergence detection, crossover/mutation/selection, narrative traits, genealogy, and research reporting.
-- Offline GA trainer (`src/lib/game/offline-ga/`) for normalized gameplay-parameter chromosomes, Gaussian mutation, self-play evaluation, checkpointing, and frozen-genome validation.
-- Headless simulator, benchmark, statistics, and report-writing infrastructure (`src/lib/game/simulator/`, `src/lib/game/research/`).
-- Intent dataset generation and validation (`src/lib/game/intent/`), plus the `gamedesigner/`, `training/`, `active/`, `distillation/`, `prediction/`, `profiler/`, `world/`, `campaign/`, `narrative/` helper trees used to build training data for the fine-tuned model.
-- Modal deployment script for hosting a fine-tuned Qwen/Game Designer model.
 
 ## Tech stack
 
@@ -107,66 +93,6 @@ These are real, runnable modules but are **not** part of the in-browser game. Th
 - Optional AI inference: external Modal endpoint configured through environment variables (used only for post-match analysis)
 - Persistence/db dependency: Prisma is present, though gameplay itself is browser-driven
 
-## Project structure
-
-```text
-src/app/
-  page.tsx                       Main app entry
-  api/ai/champion/route.ts        Returns ChampionGenome.json (the loaded genome shown in the HUD)
-  api/ai/director/route.ts        Proxies Qwen inference for POST-MATCH analysis only (validates intent)
-  api/ai/ga-stats/route.ts        GA statistics endpoint (reads data/genome_libraries)
-  api/ai/genome/route.ts          Returns champions/{style}.json for the next-genome pick
-  api/ai/llm-info/route.ts        Model/info endpoint
-
-src/components/game/
-  EternalGame.tsx                Main game shell, canvas loop, input, menus
-  StoryIntro.tsx                  Opening cinematic
-  DestructionEnding.tsx           Ending sequence
-  Director*.tsx                   Director UI panels + visualizers (rule-based state)
-  AI*.tsx                         AI transparency panels/HUDs
-  MatchDebriefPanel.tsx           Post-match analysis + genome selection (the adaptive loop)
-
-src/lib/game/
-  engine.ts                       Match phase FSM, collision, hazards, VFX, rounds
-  fighter.ts                      Fighter physics and state machine
-  ai.ts                           Rule-based opponent combat AI (EnemyAI)
-  render.ts                       Canvas2D renderer
-  poses.ts                        Pose and attack animation data
-  audio.ts                        Procedural audio
-  postfx.ts                       WebGL post-processing
-  types.ts                        Shared gameplay types
-  config/                         Opponents, physics, arenas, hazards, VFX constants
-  director/DirectorRuntime.ts      DETERMINISTIC runtime Director (chapter -> intent -> params) [LIVE]
-  director/DirectorEngine*.ts      Offline training-time Director pipeline (DirectorEngine V1-V5) [TOOLING]
-  directorJournal.ts              computeAIDebrief / watchDirector (player model) [LIVE]
-  postMatchAnalysis.ts            Post-match analysis + genome-style selection [LIVE]
-  intent/IntentOutputValidator.ts Validates Qwen output (used by /api/ai/director) [LIVE]
-  intent/...                      Dataset generation / schema / translator [TOOLING]
-  evolution/                      Genetic-algorithm + champion genome system [TOOLING]
-  offline-ga/                     Offline gameplay-parameter GA trainer [TOOLING]
-  simulator/                      Headless simulation and batch execution [TOOLING]
-  research/                       Benchmarking/statistics/research utilities [TOOLING]
-  gamedesigner/ training/ active/ distillation/ prediction/ profiler/ world/ campaign/ narrative/
-                                  Model/training-data helper trees [TOOLING]
-
-champions/                        Frozen style genomes (balanced, aggressive, counter, patient,
-                                  rushdown, mindGame, adaptive, zoner, pressure) [LIVE data]
-best_genome.json                  Offline-GA accepted best genome (artifact)
-ChampionGenome.json               Frozen champion genome served by /api/ai/champion (artifact)
-EvolutionReport.json             Offline-GA run report (artifact)
-
-modal/
-  modal_inference.py              Modal FastAPI endpoint for the fine-tuned model
-
-scripts/
-  train-offline-ga.ts             Only script wired into package.json (train:offline-ga)
-  build-intent-dataset.ts evolve-*.ts freeze-genomes.ts ga-vs-ga.ts run-*.ts
-  smoke-test-*.ts verify-e2e.ts generate-*.ts
-                                  Other runnable tooling scripts (not in package.json)
-
-examples/ paper/ docs/ tests/ mini-services/ download/ eval_results/ tool-results/
-agent-ctx/ data/                  Docs, reports, test suites, and research artifacts (not gameplay)
-```
 
 ## Environment
 
@@ -276,7 +202,7 @@ Latest full run status, July 2, 2026:
 | Super | `]` |
 | Throw | `[` |
 
-## Director + genome flow (actual)
+## Director + genome flow 
 
 1. The UI starts a match path in `EternalGame.tsx`.
 2. The engine enters `intro` and applies a Classic Director plan (`applyDirectorPlan` / `applyOfflineDirector`) built from `DirectorRuntime.buildDirectorState(opponentIndex)`. No model call is made.
@@ -327,13 +253,6 @@ modal deploy modal/modal_inference.py
 
 Then copy the generated endpoint URL into `ETERNAL_MODEL_ENDPOINT`.
 
-## Documentation
-
-- `README.md` — full project overview and setup.
-- `docs/REPORT.md` — detailed technical implementation report and live-vs-dead-code audit.
-- `docs/README_QWEN_DIRECTOR.md` — focused Qwen Director notes (training-time pipeline; see report for runtime reality).
-- `docs/REPORT_QWEN_DIRECTOR.md` — focused Qwen Director implementation report.
-- `docs/` — additional guides (deployment, Modal training, genome freeze, evaluation, reproducibility, refactoring notes).
 
 ## Contributors
 
