@@ -1,10 +1,10 @@
 # Eternal — The Shadow's Ascension
 
-Eternal is a cinematic browser fighting game built with Next.js, TypeScript, Canvas2D, WebGL post-processing, procedural audio, and a **rule-based AI Director**. The player is not the hero: they are the ancient shadow wearing a dead hero's memories, hunting the last Sealers of a collapsing world.
+Eternal is a cinematic browser fighting game built with Next.js, TypeScript, Canvas2D, WebGL post-processing, procedural audio, and a Director that shapes each encounter from a fixed set of encounter rules. The player is not the hero: they are the ancient shadow wearing a dead hero's memories, hunting the last Sealers of a collapsing world.
 
-The current build combines a playable 2D fighting game with an AI research/tooling stack. The in-game AI is **fully deterministic and rule-based** (no model call during combat). After each match the game runs a short **player analysis** and uses it — optionally with a fine-tuned Qwen model — to **pick the next opponent genome style**, which is then loaded for the following fight.
+The build pairs a playable 2D fighting game with an AI research and tooling stack. Each fight is directed by deterministic, chapter-driven rules, and after every match the game runs a short player analysis that it uses — together with an optional fine-tuned Qwen model — to choose the genome style the next opponent will fight with.
 
-> Honest note on prior docs: earlier READMEs described a "live Qwen-powered AI Director" driving combat. That is **not** what ships. The combat Director is a deterministic, chapter-driven rule table (`DirectorRuntime`). Qwen is only ever consulted *after* a match, for the written analysis and genome-style pick, with a deterministic local fallback when no endpoint is configured. See `docs/REPORT.md` for the full audit.
+
 
 ## Current feature set
 
@@ -52,24 +52,23 @@ The current build combines a playable 2D fighting game with an AI research/tooli
 - Opponents have authored combat traits such as aggression, block chance, reaction speed, combo length, whiff punish, anti-air, pressure, mixup, adaptation, rage, and perfection.
 - Habit tracking responds to repeated player openings such as blocking, jumping, and attacking patterns (`directorJournal.ts`'s `computeAIDebrief`).
 
-### Director — deterministic, rule-based (NOT a live model)
+### Director
 
-- During combat the game applies a **deterministic** Director plan from `director/DirectorRuntime.ts`.
-- The plan is driven by a fixed chapter→intent table (`CHAPTER_INTENTS`) and a per-intent parameter table (`INTENT_TABLE`). The chapter index is the opponent's position in the roster.
-- Each intent deterministically maps to weather, lighting, camera profile, hazards (slip / chip / darkness), and a confidence-blended combat tuning applied on top of the authored opponent (or GA genome) traits.
-- There is **no live model inference during a fight**. The engine methods that would apply a live LLM plan (`setDirectorThinking`, `applyAIIntent`, `setDirectorFallback`) exist but are **never invoked** in the running game; every match uses `applyOfflineDirector` / `applyDirectorPlan` (the "Classic Director").
+- During combat the game applies a Director plan from `director/DirectorRuntime.ts`, built from a fixed chapter→intent table and a per-intent parameter table.
+- The chapter index is the opponent's position in the roster. Each intent maps to weather, lighting, camera profile, hazards (slip / chip / darkness), and a confidence-blended combat tuning applied on top of the authored opponent (or GA genome) traits.
+- The plan is derived from rules rather than a live model call, so fights stay consistent and offline-friendly; every match uses `applyOfflineDirector` / `applyDirectorPlan` (the "Classic Director").
 
 ### Post-match analysis + genome selection (the adaptive loop)
 
-After each match the `MatchDebriefPanel` runs the actual "adaptive" behavior:
+After each match the `MatchDebriefPanel` runs the analysis and genome selection:
 
-1. Computes a **local, deterministic** player debrief (`computeAIDebrief`): grade, archetype, behavioral observations, and trait scores.
-2. Optionally calls `/api/ai/director` (the configured Qwen endpoint) **once** for a one-paragraph written analysis and a hint about which genome style should face the player next.
-3. On failure or timeout (12s) it falls back to a **local** style pick (`selectGenomeStyleFromLocal`) — the feature works fully offline.
-4. Loads the chosen style's frozen genome from `champions/{style}.json` via `/api/ai/genome` and stages it on the engine (`setChampionOverride` + `setUseChampionGenome(true)`) so the **next** opponent fights with that genome.
+1. Computes a player debrief (`computeAIDebrief`): grade, archetype, behavioral observations, and trait scores.
+2. Optionally calls `/api/ai/director` (the configured Qwen endpoint) once for a one-paragraph written analysis and a hint about which genome style should face the player next.
+3. On failure or timeout (12s) it falls back to a local style pick (`selectGenomeStyleFromLocal`) so the feature works fully offline.
+4. Loads the chosen style's frozen genome from `champions/{style}.json` via `/api/ai/genome` and stages it on the engine (`setChampionOverride` + `setUseChampionGenome(true)`) so the next opponent fights with that genome.
 5. The panel shows the grade, player model, traits, the analysis paragraph, and the selected next-genome style.
 
-This is the mechanism the project uses to "select a genome after rounds and do analysis shown after each round." It is rule-based with an optional LLM assist — not a live director.
+This is the mechanism the project uses to select a genome after rounds and show analysis after each round, with an optional model assist when an endpoint is configured.
 
 ### AI transparency UI
 
@@ -280,7 +279,7 @@ Latest full run status, July 2, 2026:
 ## Director + genome flow (actual)
 
 1. The UI starts a match path in `EternalGame.tsx`.
-2. The engine enters `intro` and applies a **deterministic** Classic Director plan (`applyDirectorPlan` / `applyOfflineDirector`) built from `DirectorRuntime.buildDirectorState(opponentIndex)`. No model call is made.
+2. The engine enters `intro` and applies a Classic Director plan (`applyDirectorPlan` / `applyOfflineDirector`) built from `DirectorRuntime.buildDirectorState(opponentIndex)`. No model call is made.
 3. The match plays out; the Director state (weather, lighting, camera, hazards, confidence-blended combat tuning) is read by the renderer and engine. `watchDirector` records the encounter into the local player journal.
 4. When the match ends, `MatchDebriefPanel` mounts and:
    - computes a local debrief (`computeAIDebrief`),
