@@ -92,3 +92,5 @@ paper/*.pdf
 /best_genome.json
 /ChampionGenome.json
 /EvolutionReport.json
+
+.env*

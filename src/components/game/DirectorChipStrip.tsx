@@ -68,7 +68,7 @@ export function DirectorChipStrip({ engine, visible }: DirectorChipStripProps) {
   return (
     <div
       data-testid="director-chip-strip"
-      className="absolute top-12 sm:top-14 left-3 z-30 flex flex-wrap gap-1.5 max-w-[60vw] pointer-events-none animate-in fade-in-0 slide-in-from-top-2 duration-700"
+      className="absolute top-[7.25rem] sm:top-[8.25rem] left-3 z-30 flex flex-col items-start gap-1.5 max-w-[40vw] pointer-events-none animate-in fade-in-0 slide-in-from-top-2 duration-700"
     >
       {chips.map((c) => (
         <div

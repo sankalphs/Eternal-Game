@@ -123,7 +123,9 @@ export class GameEngine {
     // before the genome file has been generated, this stays undefined
     // and the engine falls back to baseline instead of crashing.
     genes?: Record<string, number>;
-    fitnessHistory: number[];
+    fitnessHistory?: number[];
+    /** Style label when selected post-match (e.g. counter, adaptive). */
+    style?: string;
   } | null = null;
 
   input: InputState = {
@@ -264,18 +266,19 @@ export class GameEngine {
    * Prefer live Qwen; when it fails or times out, unlock the fight with a
    * deterministic Classic Director plan. Never soft-lock single-player intro.
    * Status stays "fallback" so UI never pretends this is live Qwen.
+   * Player-facing copy never says "offline" or "applied".
    */
   setDirectorFallback(error: string) {
-    const offline = buildDirectorState(this.opponentIndex);
+    const classic = buildDirectorState(this.opponentIndex);
     this.directorState = {
-      ...offline,
+      ...classic,
       ai: {
         status: "fallback",
-        model: "Classic Director · offline",
-        intent: offline.intent,
-        reasoning: `Live Qwen unavailable (${error}). Using the chapter's deterministic Director plan for weather, lighting, camera, hazards, and baseline AI.`,
-        expectedPlayerReaction: offline.ai.expectedPlayerReaction,
-        highLevelPlan: offline.ai.highLevelPlan,
+        model: "Classic Director",
+        intent: classic.intent,
+        reasoning: `Using the chapter's Classic Director plan for weather, lighting, camera, hazards, and baseline AI. (${error})`,
+        expectedPlayerReaction: classic.ai.expectedPlayerReaction,
+        highLevelPlan: classic.ai.highLevelPlan,
         confidence: 0.55,
         latencyMs: null,
         error,
@@ -283,12 +286,12 @@ export class GameEngine {
     };
     this.directorBaseShake = this.directorState.camera.baseShake;
     this.directorBaseZoomBoost = this.directorState.camera.baseZoomBoost;
-    // Mild theme blend so offline fights still feel directed, without claiming live AI.
+    // Mild theme blend so Classic Director fights still feel directed.
     this.applyCombatPlanToCurrentAI(true);
     if (this.phase === "intro") {
       this.setAnnounce(
         "CLASSIC DIRECTOR",
-        "Offline plan applied — the fight begins",
+        "Director plan ready — the fight begins",
         1.4,
         true,
       );
@@ -297,7 +300,7 @@ export class GameEngine {
     }
   }
 
-  /** Instant offline Director for practice / tutorial (no Qwen wait). */
+  /** Instant Classic Director for practice / tutorial (no Qwen wait). */
   applyOfflineDirector(reason = "Practice mode uses the Classic Director.") {
     this.setDirectorFallback(reason);
   }
@@ -442,7 +445,7 @@ export class GameEngine {
     this.twoPlayer = false;
     this.practiceMode = true;
     this.practiceInfiniteHp = infiniteHp;
-    this.applyOfflineDirector("Practice mode — Classic Director (no live Qwen).");
+    this.applyOfflineDirector("Practice mode — Classic Director.");
     this.ai = new EnemyAI(OPPONENTS[this.opponentIndex]);
     this.applyChampionToCurrentAI();
     this.enemy = this.makeEnemy(this.opponentIndex);

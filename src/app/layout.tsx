@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   keywords: ["Shadow Fight", "fighting game", "martial arts", "canvas game", "Next.js"],
   authors: [{ name: "Z.ai" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/icon.svg",
   },
   openGraph: {
     title: "Eternal — The Shadow's Ascension",

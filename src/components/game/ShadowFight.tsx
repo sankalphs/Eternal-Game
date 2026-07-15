@@ -85,7 +85,7 @@ const P1_ARROW_MAP: Record<string, keyof InputState> = {
 
 const SETTINGS_KEY = "eternal_settings_v1";
 const PROGRESS_KEY = "eternal_progress_v1";
-const DIRECTOR_TIMEOUT_MS = 4000;
+
 
 function loadSettings(): {
   volume: number;
@@ -166,7 +166,7 @@ export default function ShadowFight() {
   // Director, the genome HUD, and the AI insights on demand.
   const [showDirector, setShowDirector] = useState(false);
   const [showAIInsights, setShowAIInsights] = useState(false);
-  const [useChampion, setUseChampion] = useState(false);
+  const [useChampion, setUseChampion] = useState(true);
   const [championLoaded, setChampionLoaded] = useState(false);
   useEffect(() => { pausedRef.current = paused; }, [paused]);
 
@@ -245,45 +245,15 @@ export default function ShadowFight() {
   }, [eng, useChampion]);
   // Persistent Director watcher — survives remounts; reset explicitly on
   // match start (nextMatch/retry/etc.).
+  // Qwen is NEVER called during gameplay — only after a match (MatchDebriefPanel)
+  // for analysis + next-genome selection. Combat uses Classic Director only.
   const directorWatchRef = useRef(createDirectorWatcher());
   const directorAccRef = useRef(0);
-  const directorRequestRef = useRef(0);
 
-  const requestAIDirector = useCallback(async () => {
-    if (eng.twoPlayer || eng.practiceMode) return;
-    const requestNo = ++directorRequestRef.current;
-    eng.setDirectorThinking();
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), DIRECTOR_TIMEOUT_MS);
-    try {
-      const ai = eng.ai.getState();
-      const response = await fetch("/api/ai/director", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          opponent: { index: eng.opponentIndex, name: eng.opponent.name, title: eng.opponent.title, bodyType: eng.opponent.bodyType },
-          chapter: { index: eng.opponentIndex, total: OPPONENTS.length, currentIntent: eng.directorState.intent },
-          player: { wins: eng.playerWins, losses: eng.enemyWins, maxCombo: eng.maxCombo },
-          enemy: { mode: ai.mode, hpFraction: ai.selfHpFrac, usingEvolvedGenome: eng.useChampionGenome },
-        }),
-      });
-      const data = await response.json();
-      if (requestNo !== directorRequestRef.current) return;
-      if (!response.ok) throw new Error(data.error ?? `Director request failed (${response.status})`);
-      eng.applyAIIntent(data.intent, data.model, data.latencyMs);
-    } catch (error) {
-      if (requestNo !== directorRequestRef.current) return;
-      const msg =
-        error instanceof Error
-          ? error.name === "AbortError"
-            ? `Timed out after ${DIRECTOR_TIMEOUT_MS / 1000}s`
-            : error.message
-          : String(error);
-      eng.setDirectorFallback(msg);
-    } finally {
-      window.clearTimeout(timer);
-    }
+  /** Instant Classic Director for the upcoming fight (no Qwen, no intro hold). */
+  const applyClassicDirectorForFight = useCallback(() => {
+    if (eng.twoPlayer) return;
+    eng.applyOfflineDirector("Classic Director — combat plan.");
   }, [eng]);
 
   useEffect(() => {
@@ -498,9 +468,10 @@ export default function ShadowFight() {
       resetDirectorJournal();
       directorWatchRef.current = createDirectorWatcher();
       if (!muted) void audio.start();
-      if (!opts?.skipDirector) void requestAIDirector();
+      // Classic Director only — Qwen runs after the match, not before/during.
+      if (!opts?.skipDirector) applyClassicDirectorForFight();
     },
-    [eng, audio, muted, requestAIDirector],
+    [eng, audio, muted, applyClassicDirectorForFight],
   );
 
   const start = useCallback(() => {
@@ -569,8 +540,8 @@ export default function ShadowFight() {
     resetDirectorJournal();
     directorWatchRef.current = createDirectorWatcher();
     if (!muted) void audio.start();
-    void requestAIDirector();
-  }, [eng, audio, muted, requestAIDirector]);
+    applyClassicDirectorForFight();
+  }, [eng, audio, muted, applyClassicDirectorForFight]);
 
   const retry = useCallback(() => {
     eng.retryMatch();
@@ -578,8 +549,8 @@ export default function ShadowFight() {
     resetDirectorJournal();
     directorWatchRef.current = createDirectorWatcher();
     if (!muted) void audio.start();
-    void requestAIDirector();
-  }, [eng, audio, muted, requestAIDirector]);
+    applyClassicDirectorForFight();
+  }, [eng, audio, muted, applyClassicDirectorForFight]);
 
   const restart = useCallback(() => {
     eng.startMatch();
@@ -587,8 +558,8 @@ export default function ShadowFight() {
     resetDirectorJournal();
     directorWatchRef.current = createDirectorWatcher();
     if (!muted) void audio.start();
-    void requestAIDirector();
-  }, [eng, audio, muted, requestAIDirector]);
+    applyClassicDirectorForFight();
+  }, [eng, audio, muted, applyClassicDirectorForFight]);
 
   // Skip straight to the destruction ending — a debug/convenience shortcut
   // that bypasses the tournament and crowns the shadow immediately.
@@ -635,14 +606,14 @@ export default function ShadowFight() {
 
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
-      {/* mute + settings */}
+      {/* RHS bottom: pause / mute / settings (vertical) */}
       {!hideGameUI && (
-        <>
+        <div className="absolute bottom-3 right-3 z-40 flex flex-col-reverse items-center gap-2">
           <button
             type="button"
             onClick={() => setShowSettings((s) => !s)}
             aria-label="Settings"
-            className="absolute top-3 right-3 z-40 w-9 h-9 rounded-full border border-white/20 bg-black/50 backdrop-blur text-white/80 hover:bg-white/15 active:scale-95 transition flex items-center justify-center text-xs font-bold"
+            className="w-9 h-9 rounded-full border border-white/20 bg-black/50 backdrop-blur text-white/80 hover:bg-white/15 active:scale-95 transition flex items-center justify-center text-xs font-bold"
           >
             ⚙
           </button>
@@ -650,86 +621,49 @@ export default function ShadowFight() {
             type="button"
             onClick={toggleMute}
             aria-label={muted ? "Unmute music" : "Mute music"}
-            className="absolute top-3 right-14 z-40 w-9 h-9 rounded-full border border-white/20 bg-black/50 backdrop-blur text-white/80 hover:bg-white/15 active:scale-95 transition flex items-center justify-center"
+            className="w-9 h-9 rounded-full border border-white/20 bg-black/50 backdrop-blur text-white/80 hover:bg-white/15 active:scale-95 transition flex items-center justify-center"
           >
             {muted ? <MuteIcon /> : <SoundIcon />}
           </button>
-        </>
-      )}
-
-      {/* pause button — intro + fight */}
-      {!hideGameUI && canPause && (
-        <button
-          type="button"
-          onClick={() => setPaused((p) => !p)}
-          aria-label={paused ? "Resume" : "Pause"}
-          className="absolute top-3 right-24 z-40 w-9 h-9 rounded-full border border-white/20 bg-black/50 backdrop-blur text-white/80 hover:bg-white/15 active:scale-95 transition flex items-center justify-center text-xs"
-        >
-          {paused ? "▶" : "❚❚"}
-        </button>
-      )}
-
-      {/* AI TRANSPARENCY TOOLBAR */}
-      {!hideGameUI && started && snap.phase === "fight" && (
-        <div className="absolute top-3 left-3 z-40 flex items-center gap-2 flex-wrap max-w-[55vw]">
-          {isNarrow && (
+          {canPause && (
             <button
               type="button"
-              onClick={() => setShowAiChrome((v) => !v)}
-              className="h-9 px-3 rounded-full border border-sky-400/30 bg-sky-950/40 text-sky-200 text-[10px] font-bold tracking-wider backdrop-blur active:scale-95"
-              title="Toggle AI Director chrome"
+              onClick={() => setPaused((p) => !p)}
+              aria-label={paused ? "Resume" : "Pause"}
+              className="w-9 h-9 rounded-full border border-white/20 bg-black/50 backdrop-blur text-white/80 hover:bg-white/15 active:scale-95 transition flex items-center justify-center text-xs"
             >
-              AI {showAiChrome ? "ON" : "OFF"}
+              {paused ? "▶" : "❚❚"}
             </button>
           )}
-          {(showAiChrome || !isNarrow) && (
-            <>
-              <button
-                type="button"
-                onClick={() => setShowDirector(true)}
-                data-testid="btn-director"
-                className="h-9 px-3 sm:px-4 rounded-full border border-emerald-400/30 bg-emerald-950/40 text-emerald-200 text-[10px] sm:text-xs font-bold tracking-wider hover:bg-emerald-900/60 hover:text-emerald-100 active:scale-95 transition flex items-center gap-1.5 backdrop-blur"
-                title="See what the AI Director is doing"
-              >
-                <span>👁</span>
-                <span className="hidden xs:inline sm:inline">DIRECTOR</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowAIInsights(true)}
-                data-testid="btn-ai-insights"
-                className="h-9 px-3 sm:px-4 rounded-full border border-fuchsia-400/30 bg-fuchsia-950/40 text-fuchsia-200 text-[10px] sm:text-xs font-bold tracking-wider hover:bg-fuchsia-900/60 hover:text-fuchsia-100 active:scale-95 transition flex items-center gap-1.5 backdrop-blur"
-              >
-                <span>🧬</span>
-                <span className="hidden sm:inline">AI</span>
-              </button>
-              <button
-                type="button"
-                disabled={!championLoaded}
-                onClick={() => setUseChampion((v) => !v)}
-                data-testid="btn-ga-toggle"
-                className={
-                  "h-9 px-3 sm:px-4 rounded-full border text-[10px] sm:text-xs font-bold tracking-wider transition flex items-center gap-1.5 backdrop-blur " +
-                  (useChampion
-                    ? "border-amber-300 bg-amber-500/30 text-amber-100 hover:bg-amber-500/40"
-                    : "border-amber-400/30 bg-amber-950/40 text-amber-200 hover:bg-amber-900/60 hover:text-amber-100") +
-                  " active:scale-95" +
-                  (championLoaded ? "" : " opacity-50 cursor-not-allowed")
-                }
-              >
-                <span>GA</span>
-                <span className="hidden sm:inline">
-                  {useChampion ? "ON" : championLoaded ? "off" : "…"}
-                </span>
-              </button>
-            </>
-          )}
+        </div>
+      )}
+
+      {/* GA toggle — below HP bar, above weather chips */}
+      {!hideGameUI && started && snap.phase === "fight" && (
+        <div className="absolute top-[4.5rem] sm:top-20 left-3 z-40">
+          <button
+            type="button"
+            disabled={!championLoaded}
+            onClick={() => setUseChampion((v) => !v)}
+            data-testid="btn-ga-toggle"
+            className={
+              "h-9 px-3 sm:px-4 rounded-full border text-[10px] sm:text-xs font-bold tracking-wider transition flex items-center gap-1.5 backdrop-blur " +
+              (useChampion
+                ? "border-amber-300 bg-amber-500/30 text-amber-100 hover:bg-amber-500/40"
+                : "border-amber-400/30 bg-amber-950/40 text-amber-200 hover:bg-amber-900/60 hover:text-amber-100") +
+              " active:scale-95" +
+              (championLoaded ? "" : " opacity-50 cursor-not-allowed")
+            }
+          >
+            <span>GA</span>
+            <span>{useChampion ? "ON" : championLoaded ? "off" : "…"}</span>
+          </button>
         </div>
       )}
 
       {/* Settings popover */}
       {showSettings && !hideGameUI && (
-        <div className="absolute top-14 right-3 z-50 w-64 rounded-xl border border-white/15 bg-zinc-950/95 p-3 text-white shadow-2xl backdrop-blur">
+        <div className="absolute bottom-14 right-3 z-50 w-64 rounded-xl border border-white/15 bg-zinc-950/95 p-3 text-white shadow-2xl backdrop-blur">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-bold tracking-[0.25em] text-zinc-400">SETTINGS</span>
             <button type="button" className="text-zinc-500 text-xs" onClick={() => setShowSettings(false)}>✕</button>
