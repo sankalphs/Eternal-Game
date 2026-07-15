@@ -315,9 +315,10 @@ Then copy the generated endpoint URL into `ETERNAL_MODEL_ENDPOINT`.
 ## Documentation
 
 - `README.md` — full project overview and setup.
-- `REPORT.md` — technical implementation report.
-- `README_QWEN_DIRECTOR.md` — focused Qwen Director notes.
-- `REPORT_QWEN_DIRECTOR.md` — focused Qwen Director implementation report.
+- `docs/REPORT.md` — technical implementation report.
+- `docs/README_QWEN_DIRECTOR.md` — focused Qwen Director notes.
+- `docs/REPORT_QWEN_DIRECTOR.md` — focused Qwen Director implementation report.
+- `docs/` — additional guides (deployment, Modal training, genome freeze, evaluation, reproducibility, refactoring notes).
 
 ## Contributors
 

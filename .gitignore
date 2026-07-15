@@ -86,7 +86,10 @@ paper/*.pdf
 /*.jpg
 /*.jpeg
 /*.gif
+/*.mp3
+/*.wav
 /tsconfig.tsbuildinfo
+images/
 /best_genome.json
 /EvolutionReport.json
 
