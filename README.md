@@ -2,7 +2,8 @@
 
 Eternal is a cinematic browser fighting game built with Next.js, TypeScript, Canvas2D, WebGL post-processing, procedural audio, and a Director that shapes each encounter from a fixed set of encounter rules. The player is not the hero: they are the ancient shadow wearing a dead hero's memories, hunting the last Sealers of a collapsing world.
 
-The build pairs a playable 2D fighting game with an AI research and tooling stack. Each fight is directed by deterministic, chapter-driven rules, and after every match the game runs a short player analysis that it uses — together with an fine-tuned Qwen model — to choose the genome style the next opponent will fight with.
+The build pairs a playable 2D fighting game with an AI research and tooling stack. Each fight is directed by deterministic, chapter-driven rules, and after every match the game runs analysis with an fine-tuned Qwen model to choose the genome style of the next opponent to fight with and player analysis.
+
 
 
 
