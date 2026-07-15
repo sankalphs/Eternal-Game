@@ -40,6 +40,7 @@ The current build combines a playable 2D fighting game with an AI research stack
 ### Audio
 
 - Procedural Web Audio soundtrack and hit effects.
+- Narrated cinematic prologue: `public/audio/Blade_at_the_Gate.mp3` plays alongside the opening story intro in `StoryIntro.tsx`.
 - Combat events emit audio/VFX events from the engine.
 - Mute/unmute control in the game UI.
 
@@ -189,7 +190,7 @@ Build:
 bun run build
 ```
 
-Start the production standalone server after build:
+Start the production server after build:
 
 ```bash
 bun run start
@@ -317,3 +318,8 @@ Then copy the generated endpoint URL into `ETERNAL_MODEL_ENDPOINT`.
 - `REPORT.md` — technical implementation report.
 - `README_QWEN_DIRECTOR.md` — focused Qwen Director notes.
 - `REPORT_QWEN_DIRECTOR.md` — focused Qwen Director implementation report.
+
+## Contributors
+
+- [sankalphs](https://github.com/sankalphs)
+- [Sathvikar01](https://github.com/Sathvikar01)
