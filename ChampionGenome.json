@@ -1,0 +1,53 @@
+{
+  "aggression": 0.653492283716005,
+  "blockChance": 0.7007257218703506,
+  "reaction": 0.30592475447810313,
+  "combo": 5,
+  "whiffPunish": 0.04786470842652735,
+  "antiAir": 0.07673123832673028,
+  "pressure": 0.93212927666121,
+  "mixup": 0,
+  "adaptive": 0.08762716267379049,
+  "rage": 0.4311539902628728,
+  "perfection": 1,
+  "readDelay": 0.18753895147847582,
+  "id": "genome_widow_pool_0_4",
+  "version": "1.0.0",
+  "generation": 0,
+  "source": "ga-widow-passed",
+  "createdAt": "2026-06-30T09:53:57.949Z",
+  "fitnessHistory": [
+    0.5634133343716806,
+    0.5423552148351674,
+    0.5826218785004669,
+    0.5739533696613905,
+    0.5795869891818491,
+    0.6017915319557586,
+    0.6098953695973779,
+    0.6093073101575043,
+    0.611275513524374,
+    0.6003547199654805,
+    0.6246961769107856,
+    0.6186462400922065,
+    0.6198577782629784,
+    0.6316760870994996,
+    0.6103166133450288,
+    0.6419381088080384
+  ],
+  "narrativeTraits": [
+    {
+      "category": "perfection",
+      "description": "The warrior sees the opening before it forms.",
+      "strength": 1,
+      "sourceGene": "perfection"
+    },
+    {
+      "category": "pressure",
+      "description": "The warrior gives no ground.",
+      "strength": 0.93212927666121,
+      "sourceGene": "pressure"
+    }
+  ],
+  "parentA": "genome_mqzfoe6h_7b4f",
+  "parentB": "genome_mqzfoe6h_7b4f"
+}

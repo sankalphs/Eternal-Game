@@ -90,7 +90,9 @@ paper/*.pdf
 /*.wav
 /tsconfig.tsbuildinfo
 /best_genome.json
-/ChampionGenome.json
 /EvolutionReport.json
+
+# ChampionGenome.json IS required at runtime by /api/ai/champion — keep it
+!ChampionGenome.json
 
 .env*

@@ -1,0 +1,49 @@
+# Vercel build/deploy excludes — keep the bundle to only what the app needs.
+# (Vercel also honors .gitignore; this file trims extra tracked files further.)
+
+# dependencies / build output
+node_modules
+.next
+.vercel
+out
+
+# datasets, databases, model artifacts, training outputs
+data
+db
+upload
+download
+tool-results
+eval_results
+agent-ctx
+paper
+champions/*.png
+
+# screenshots / binaries at repo root
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mp3
+*.wav
+*.onnx
+*.pt
+*.pth
+*.bin
+*.gguf
+*.safetensors
+*.ckpt
+
+# docs, reports, dev scripts, tests, examples (not needed to run the web app)
+docs
+examples
+tests
+scripts
+worklog.md
+README_QWEN_DIRECTOR.md
+REPORT.md
+REPORT_QWEN_DIRECTOR.md
+Caddyfile
+
+# keep README.md
+!README.md
