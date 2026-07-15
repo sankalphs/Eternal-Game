@@ -162,7 +162,7 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
   return (
     <div className="fixed inset-0 bg-black overflow-hidden select-none">
       <canvas ref={canvasRef} className="block" />
-      <audio ref={audioRef} src="/audio/Blade_at_the_Gate.mp3" preload="auto" />
+      <audio ref={audioRef} src="/audio/Steel_on_the_Riverbank.mp3" preload="auto" />
 
       {/* Vignette */}
       <div
