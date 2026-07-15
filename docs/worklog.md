@@ -330,7 +330,7 @@ Stage Summary:
 ---
 Task ID: DOC-1
 Agent: main
-Task: Write a comprehensive README.md and REPORT.md with deep technical details, and verify fighters render as solid filled shadow silhouettes.
+Task: Write a comprehensive README.md and docs/REPORT.md with deep technical details, and verify fighters render as solid filled shadow silhouettes.
 
 Work Log:
 - Read all core game source files (types.ts, fighter.ts, render.ts, poses.ts, ai.ts, engine.ts, postfx.ts, audio.ts, rl.ts, story.ts) to extract exact constants, algorithms, and data structures.
@@ -342,12 +342,12 @@ Work Log:
 - Extracted the complete hit-resolution algorithm (takeHit) including block (82% reduction), active-frame trades, heavy-hit knockdown logic.
 - Extracted the WebGL fragment shader (bloom/CA/vignette) with the UNPACK_FLIP_Y_WEBGL fix.
 - Rewrote README.md (~580 lines) with: features, controls, tech stack, architecture diagram, frame loop, combat deep dive (specs + hit math), fighter rendering pipeline (taperedLimb code), AI deep dive (decision loop + habit tracker + difficulty curve), physics model, skeletal animation, WebGL post-fx shader, audio engine, story/cinematics, hazards, opponents table, project structure, LOC table, deployment.
-- Rewrote REPORT.md (~560 lines) with: executive summary, system architecture (data flow + module graph + frame timing), physics & state machine, combat system (specs + resolution algorithm + rage math), fighter rendering pipeline (joint computation + body-type table + taperedLimb + draw order), skeletal animation (pose + base + smoothstep + procedural states + spin), AI system (design philosophy + capability profile + decision loop pseudocode + habit tracker + mixup + rage + difficulty curve), WebGL post-processing (shader source + uniforms + Y-flip), audio engine (synthesis techniques + scale + dynamic music + stingers), story & cinematics, hazards, modes, RL module (inactive), performance, deployment, limitations, metrics.
+- Rewrote docs/REPORT.md (~560 lines) with: executive summary, system architecture (data flow + module graph + frame timing), physics & state machine, combat system (specs + resolution algorithm + rage math), fighter rendering pipeline (joint computation + body-type table + taperedLimb + draw order), skeletal animation (pose + base + smoothstep + procedural states + spin), AI system (design philosophy + capability profile + decision loop pseudocode + habit tracker + mixup + rage + difficulty curve), WebGL post-processing (shader source + uniforms + Y-flip), audio engine (synthesis techniques + scale + dynamic music + stingers), story & cinematics, hazards, modes, RL module (inactive), performance, deployment, limitations, metrics.
 - Started dev server (HTTP 200 confirmed).
 - Verified via Agent Browser: intro renders ("THE SHADOW'S ASCENSION"), menu renders ("YOU ARE THE SHADOW" + BEGIN THE HUNT), fight starts, 2D game canvas has 110,902 solid black pixels (≈21.7% of sampled region) confirming filled silhouette fighters, WebGL overlay canvas active (post-fx), no console/runtime errors.
 
 Stage Summary:
-- README.md and REPORT.md rewritten with deep technical detail (exact constants, algorithms, data tables, code excerpts, shader source).
+- README.md and docs/REPORT.md rewritten with deep technical detail (exact constants, algorithms, data tables, code excerpts, shader source).
 - Fighters confirmed as solid filled shadow silhouettes (fill="#060606", ctx.fill(), shadowBlur=0) — verified both in source and via canvas pixel sampling (110,902 black px).
 - Game verified running end-to-end via Agent Browser (intro → menu → fight, no errors).
 - Dev server running on port 3000.
