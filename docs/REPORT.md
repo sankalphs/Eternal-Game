@@ -1,354 +1,224 @@
-# Eternal — Technical Report
+# Eternal — Technical Implementation Report & Live-vs-Dead-Code Audit
+
+**Date:** 2026-07-15
+**Scope:** What is actually wired into the running browser game, what is offline
+tooling, and what is dead/never-invoked code. Written to replace the
+misleading "live Qwen Director" narrative in the prior README with the real
+runtime behavior.
+
+---
 
 ## 1. Executive summary
 
-Eternal is a browser-native cinematic fighting game and AI research playground. The game itself is a playable 2D shadow fighter: Canvas2D rendering, WebGL post-processing, Web Audio, a custom physics/combat engine, authored opponents, story progression, local versus, and cinematic intro/ending sequences.
-
-The current codebase also contains a substantial AI stack. The active gameplay path uses a rule-based `EnemyAI`, optional GA champion genomes, and a live Qwen AI Director. The Director is now authoritative for single-player match start: the engine does not advance from intro into active fighting until Qwen returns a validated live plan. That plan drives environment presentation, hazards, camera, and actual opponent combat tuning.
-
-## 2. Product scope
-
-### Player-facing features
-
-- Story tournament with eight escalating opponents.
-- Free Select mode for direct opponent/arena selection.
-- Two-player local versus.
-- Skip-to-ending shortcut.
-- Round/match/champion phase flow.
-- Health, rage, round timer, round pips, combo counter, announcements, and touch controls.
-- In-fight AI transparency toolbar and panels.
-
-### Narrative
-
-The player is the shadow/villain, not the savior. Opponents are the last Sealers trying to contain the player. The final champion state triggers the world-destruction ending.
-
-### Current opponents
-
-| Opponent | Title | Arena | Combat profile |
-| --- | --- | --- | --- |
-| Lynx | The Last Apprentice | Sunset | forgiving starter |
-| Bandit | The Defector | Desert | faster, more aggressive |
-| Crane | The Temple Guard | Temple | defensive and measured |
-| Hermit | The Hermit | Bamboo | adaptive teacher archetype |
-| Widow | The Nightblade | Moon | fast whiff-punisher |
-| Butcher | The Colossus | Volcano | high HP and pressure |
-| Shogun | The Shogun | Snow | strong defense and mixups |
-| Titan | The World's Last Hope | Moon | final high-stat opponent |
-
-## 3. Runtime architecture
-
-```text
-React / EternalGame.tsx
-  owns canvas refs, input, UI overlays, menu flow, Director requests
-        |
-        v
-GameEngine
-  phase FSM, rounds, fighters, AI, collision, hazards, particles, VFX events
-        |
-        +--> Fighter
-        |      physics, state transitions, hitboxes, attacks, damage response
-        |
-        +--> EnemyAI
-        |      rule-based opponent input generation
-        |
-        +--> DirectorRuntime
-        |      live Qwen state, weather/lighting/camera/hazard/combat tuning
-        |
-        v
-render.ts + postfx.ts + audio.ts
-  Canvas2D frame, WebGL overlay, Web Audio response
-```
-
-The game loop is driven by `requestAnimationFrame`. React state is used for snapshots and UI, while the simulation itself lives in the engine object to avoid per-frame React reconciliation.
-
-## 4. Match phase model
-
-Main phases:
-
-- `menu`
-- `intro`
-- `fight`
-- `round_end`
-- `match_end`
-- `game_over`
-- `champion`
-
-Important flow:
-
-1. A match path creates/reset fighters and starts a round.
-2. The round enters `intro`.
-3. For single-player, `intro` is held while Qwen is not live.
-4. When Qwen returns a valid plan, `directorState.ai.status` becomes `live`.
-5. Only then can `intro` count down into `fight`.
-6. KO or timeout enters `round_end`.
-7. Best-of-three determines match end, game over, next opponent, or champion ending.
-
-Two-player mode skips the Qwen Director gate because it does not use an AI opponent.
-
-## 5. Combat engine
-
-### Fighter state and movement
-
-The `Fighter` class owns physics and action state. Movement uses velocity, acceleration, friction, gravity, stage bounds, and grounded/airborne state. Jumps support variable height by cutting upward velocity when the input is released early. Rolls apply directional movement and invulnerability.
-
-### Attack model
-
-Available attacks:
-
-- punch
-- kick
-- roundhouse
-- super
-
-Attacks are committed state transitions with startup/active/recovery windows. Hitboxes only exist during active windows. Damage is affected by attacker multipliers, blocking, invulnerability, knockdown state, and hit type.
-
-### Defensive model
-
-- Block only works when grounded and correctly facing the incoming hit.
-- Roll grants invulnerability.
-- Knockdown/getup include invulnerability to prevent repeated lockdown.
-- Active-frame trades allow attacks already in their active window to still connect.
-
-### VFX and feedback
-
-Combat outcomes produce:
-
-- hitstop,
-- screen shake,
-- flash,
-- zoom,
-- slow motion,
-- chromatic aberration,
-- spark/ring/shockwave/streak particles,
-- floating damage or block text,
-- audio/VFX events.
-
-## 6. Rendering pipeline
-
-The renderer uses Canvas2D for the main scene and a WebGL pass for post-processing.
-
-Main Canvas2D responsibilities:
-
-- draw arena/background,
-- draw ground and atmospheric layers,
-- compute fighter poses,
-- render filled shadow silhouettes,
-- render auras and rim accents,
-- draw particles, shockwaves, streaks, and floating text,
-- draw vignette/scene overlays.
-
-The WebGL post-process layer adds bloom, chromatic aberration, and vignette intensity controlled by engine VFX state.
-
-## 7. Audio system
-
-The audio layer uses Web Audio rather than relying primarily on static files. The engine emits combat events; the audio system converts them into responsive hit, block, heavy-hit, and KO feedback. The UI exposes mute/unmute.
-
-## 8. AI opponent system
-
-The active opponent controller is `EnemyAI` in `src/lib/game/ai.ts`. It reads an `OpponentDef` and returns input for the enemy fighter each frame.
-
-Important opponent fields:
-
-- `aggression`
-- `blockChance`
-- `reaction`
-- `combo`
-- `whiffPunish`
-- `antiAir`
-- `pressure`
-- `mixup`
-- `readDelay`
-- `adaptive`
-- `rage`
-- `perfection`
-- `speedMul`
-- `damageMul`
-- `hp`
-
-The AI can approach, retreat, block, wait, zone, punish whiffs, anti-air jumps, apply pressure, mix attack types, and adapt to repeated player habits.
-
-## 9. Qwen AI Director
-
-### Request path
-
-`EternalGame.tsx` calls `/api/ai/director` with current context:
-
-- opponent identity,
-- chapter index,
-- current Director intent,
-- player wins/losses/max combo,
-- enemy state,
-- whether the evolved genome is active.
-
-The route handler:
-
-1. reads `ETERNAL_MODEL_ENDPOINT`,
-2. forwards the context to the Modal-hosted model,
-3. validates the model output,
-4. returns normalized intent, model label, latency, and request id.
-
-### Runtime application
-
-`DirectorRuntime.ts` translates model output into safe runtime themes. The themes drive:
-
-- weather,
-- lighting,
-- camera,
-- hazards,
-- combat tuning.
-
-The runtime intent set includes revenge, redemption, revelation, defiance, grief, and triumph.
-
-### Match gate
-
-The engine method `shouldHoldIntroForDirector()` holds single-player matches in intro until the Director status is `live`. This prevents gameplay from beginning before Qwen is ready.
-
-### Combat tuning
-
-`applyDirectorCombatIntent()` modifies the opponent definition based on the Director theme. Examples:
-
-- revenge increases aggression and whiff punish while reducing reaction delay,
-- redemption lowers pressure and aggression,
-- revelation increases adaptation/read behavior,
-- defiance increases pressure,
-- grief makes the AI more guarded,
-- triumph raises overall challenge.
-
-The tuning is confidence-blended and clamps bounded fields to safe ranges.
-
-## 10. Genetic algorithm and champion genome
-
-The evolution subsystem contains genomes, mutation, crossover, selection, fitness evaluation, genealogy, narrative traits, research reporting, and multiple simulated player archetypes.
-
-Gameplay integration:
-
-- `/api/ai/champion` reads `ChampionGenome.json` if present.
-- The UI can enable GA champion mode.
-- The engine overlays the champion genes onto the current opponent.
-- If Qwen is live, Director combat tuning is applied on top of the champion definition.
-
-Relevant scripts include:
-
-- `scripts/evolve-champion.ts`
-- `scripts/evolve-library.ts`
-- `scripts/evolve-widow.ts`
-- `scripts/freeze-genomes.ts`
-- `scripts/ga-vs-ga.ts`
-- `scripts/train-offline-ga.ts`
-
-### Offline gameplay-parameter GA
-
-The new offline GA module in `src/lib/game/offline-ga` evolves gameplay parameters rather than neural-network weights. Each genome is a normalized chromosome with genes for aggression, defense priority, dodge probability, counter attack tendency, combo continuation threshold, block frequency, punish window, risk tolerance, distance preference, jump frequency, projectile usage, and ultimate usage threshold.
-
-Architecture:
-
-- `Genome.ts` defines the normalized gene schema, population diversity, uniform crossover, and Gaussian mutation.
-- `Fitness.ts` computes configurable weighted fitness from simulator outcomes only: win rate, remaining HP, damage dealt, damage avoided, combo efficiency, and survival time.
-- `SimulatorAdapter.ts` keeps the GA engine separate from the current fighting simulator and maps offline genes into the existing `OpponentDef`/headless simulator interface.
-- `OfflineEvolutionTrainer.ts` runs tournament selection, 20% default elitism, crossover, mutation, checkpointing, adaptive baseline pressure, and final frozen-genome validation.
-- `CheckpointStore.ts` writes every generation and the final `best_genome.json` artifact.
-- The headless simulator now uses side-aware enemy controllers, so a rule-based AI driving side A reads `engine.player` as self and `engine.enemy` as the opponent. Genome/opponent detection is also stricter, preventing authored `OpponentDef` baselines from being misclassified as genomes.
-
-Default run behavior:
-
-- Population size: 100.
-- Initial training generations: 100.
-- Maximum generations after failed validation: 300.
-- Mutation: Gaussian noise with configurable rate and standard deviation.
-- Validation: freeze only the best genome, then evaluate against every configured baseline opponent at an 80% default win-rate threshold.
-- If validation fails, failed baseline opponents receive extra fitness pressure and evolution resumes until validation passes or `maxGenerations` is reached.
-
-## 11. AI/research infrastructure
-
-The repo includes modules beyond the currently active moment-to-moment gameplay path:
-
-- intent schema and output validation,
-- massive dataset generation/export,
-- fine-tuning package generation,
-- active learning,
-- confidence and quality engines,
-- prompt building/strategy,
-- memory retrieval,
-- game-designer pipelines,
-- prediction/player psychology,
-- campaign and narrative planners,
-- world history/state,
-- headless simulator and batch executor,
-- benchmark/statistics/report tooling.
-
-These modules support experimentation and model/dataset work around the playable game.
-
-## 12. API routes
-
-| Route | Purpose |
+- The in-browser game is **fully deterministic at runtime**. There is **no live
+  model call during combat**.
+- The combat "Director" is `src/lib/game/director/DirectorRuntime.ts`, a
+  fixed chapter→intent→parameter lookup table. It is rule-based and offline.
+- Qwen (the fine-tuned model behind `ETERNAL_MODEL_ENDPOINT`) is consulted
+  **exactly once per match**, in `MatchDebriefPanel`, for a written player
+  analysis + a hint about the next genome style. It has a deterministic local
+  fallback when the endpoint is absent or times out.
+- The "adaptive" behavior the project advertises is the **post-match genome
+  selection loop**: after each match the game picks a frozen genome style from
+  `champions/{style}.json` and stages it for the next fight.
+- The large `evolution/`, `offline-ga/`, `simulator/`, `research/`,
+  `gamedesigner/`, `training/`, `intent/` (dataset generation), `active/`,
+  `distillation/`, `prediction/`, `profiler/`, `world/`, `campaign/`,
+  `narrative/` trees are **real and runnable**, but they are **offline tooling**
+  used by `scripts/*.ts` to train/validate models and genomes. They are not
+  imported by the runtime game or its routes.
+- Three components are defined but never mounted: `EvolutionPanel.tsx`,
+  `DirectorActionVisualizer.tsx`, `DirectorIntentCard.tsx`.
+- The in-combat "live Qwen" engine methods (`setDirectorThinking`,
+  `applyAIIntent`, `setDirectorFallback`) are **dead code** — grep finds zero
+  callers in `src/components` or `src/app`.
+
+---
+
+## 2. Runtime architecture (LIVE)
+
+Entry point: `src/components/game/EternalGame.tsx` → `src/lib/game/engine.ts`.
+
+### Core engine modules (all live)
+| Module | Role |
 | --- | --- |
-| `/api/ai/director` | Live Qwen Director inference proxy |
-| `/api/ai/champion` | Reads current frozen champion genome |
-| `/api/ai/ga-stats` | GA/evolution statistics |
-| `/api/ai/llm-info` | Model/LLM information |
+| `engine.ts` | Match-phase FSM, collision, hazards, VFX, rounds, GA-champion overlay |
+| `fighter.ts` | Fighter physics + state machine |
+| `ai.ts` | `EnemyAI` — rule-based opponent controller |
+| `render.ts` | Canvas2D renderer |
+| `poses.ts` | Pose / attack animation data |
+| `audio.ts` | Procedural Web Audio |
+| `postfx.ts` | WebGL post-processing |
+| `types.ts` | Shared gameplay types |
+| `config/*` | Opponents, physics, arenas, hazards, VFX constants |
+| `canvas-utils.ts` | Canvas helpers (used by EternalGame, StoryIntro, DestructionEnding) |
+| `story.ts` | Story script data |
 
-The Director route is dynamic and uses Node.js runtime because it calls an external endpoint and validates the returned intent.
+### Director (live, deterministic)
+- `director/DirectorRuntime.ts` — `buildDirectorState(opponentIndex)` builds a
+  `DirectorRuntimeState` from `CHAPTER_INTENTS` (index→intent) and `INTENT_TABLE`
+  (intent→weather/lighting/camera/hazards/combat tuning). The renderer and
+  engine read this state directly.
+- `applyDirectorCombatIntent(base, intent, confidence)` blends the intent's
+  combat multipliers onto the authored opponent (or GA genome) traits.
+- `applyAIIntent(...)` exists for the (unused) live path; it is not called.
 
-## 13. Configuration and environment
+### Post-match analysis + genome selection (LIVE — the adaptive loop)
+- `directorJournal.ts` — `computeAIDebrief(engine)` (grade, archetype,
+  observations, traits) and `watchDirector`/`recordEncounter` for local history.
+- `postMatchAnalysis.ts` — `buildPostMatchDirectorContext`,
+  `selectGenomeStyleFromIntent`, `selectGenomeStyleFromLocal`,
+  `buildAnalysisSummary`, `buildLocalSummary`.
+- `MatchDebriefPanel.tsx` — after each match: local debrief → optional
+  `/api/ai/director` call → `/api/ai/genome?style=...` → `engine.setChampionOverride`
+  + `setUseChampionGenome(true)`. Shows grade, player model, traits, analysis,
+  and the selected next-genome style.
+- `intent/IntentOutputValidator.ts` — validates the Qwen payload returned by
+  `/api/ai/director`. This is the only gamedesigner-adjacent module on the live path.
 
-Required/important environment variables:
+### Live server routes (all called via `fetch` from components)
+| Route | Behavior |
+| --- | --- |
+| `/api/ai/champion` | Reads `ChampionGenome.json`; shows the loaded genome in the HUD |
+| `/api/ai/director` | Proxies `ETERNAL_MODEL_ENDPOINT`, validates with `IntentOutputValidator` (post-match only) |
+| `/api/ai/ga-stats` | Reads `data/genome_libraries/GenomeLibrary_v2_summary.json` |
+| `/api/ai/genome` | Reads `champions/{style}.json` for the next-genome pick |
+| `/api/ai/llm-info` | Model/info endpoint |
 
-```env
-DATABASE_URL="file:./db/custom.db"
-ETERNAL_MODEL_ENDPOINT="https://YOUR-WORKSPACE--eternal-inference-eternal-game-designer.modal.run"
-ETERNAL_MODEL_API_KEY=""
-```
+### Live UI components (mounted)
+`EternalGame`, `StoryIntro`, `DestructionEnding`, `DirectorPanel` (+`DirectorTimeline`),
+`DirectorNarration`, `DirectorChipStrip`, `DirectorNotification`, `LiveAIDirector`,
+`AIInsightsPanel`, `AIGenomeHud`, `AIDecisionTicker`, `MatchDebriefPanel`,
+`AboutAI`.
 
-`ETERNAL_MODEL_ENDPOINT` is required for the single-player Qwen-gated match flow. Without it, single-player match start remains locked because the game intentionally refuses to enter a fight without a live Qwen plan.
+### Live data assets
+- `champions/*.json` — frozen style genomes: `adaptive`, `aggressive`, `balanced`,
+  `counter`, `mindGame`, `patient`, `pressure`, `rushdown`, `zoner`, plus `library.json`.
+- `ChampionGenome.json` — frozen champion genome served by `/api/ai/champion`.
+- `best_genome.json`, `EvolutionReport.json` — offline-GA artifacts.
 
-## 14. Modal inference deployment
+---
 
-The Modal endpoint is defined in `modal/modal_inference.py`. It loads a fine-tuned causal language model, exposes a FastAPI endpoint, and returns intent output for the game Director.
+## 3. The Director reality (correcting prior docs)
 
-The local Next.js API route is intentionally thin: it does not run the model locally; it forwards requests and validates responses.
+Prior README claim: *"a live Qwen-powered AI Director"* that *"drives weather,
+lighting, camera, hazards… over authored / GA genomes"* and *"Single-player
+prefers live Qwen: intro holds only while status is `thinking`."*
 
-## 15. Testing and quality status
+Audit result:
 
-Commands used for current validation:
+- The engine method `setDirectorThinking()` sets `status: "thinking"` and is
+  intended to hold the intro for a live plan. **It is never called** from any
+  component or route (grep: 0 results).
+- `applyAIIntent()` and `setDirectorFallback()` are likewise **never called**.
+- Every match start path (`startMatchWith`, `nextOpponent`, `startPractice`,
+  `startTwoPlayer`, `applyClassicDirectorForFight`) calls
+  `applyDirectorPlan()` / `applyOfflineDirector()`, i.e. the **Classic /
+  deterministic** Director.
+- `EternalGame.tsx` explicitly comments: *"Qwen is NEVER called during gameplay
+  — only after a match (MatchDebriefPanel) for analysis + next-genome selection.
+  Combat uses Classic Director only."*
 
-```bash
-bun run train:offline-ga
-./node_modules/.bin/eslint.cmd scripts/train-offline-ga.ts src/lib/game/offline-ga/*.ts
-./node_modules/.bin/tsc.cmd --noEmit
-bun test tests/director
-bun run lint
-```
+Conclusion: combat direction is 100% rule-based. The "live Qwen Director"
+section of the prior README described code that is present but **dormant**.
 
-Current observed status:
+---
 
-- Offline GA targeted lint passes with no warnings.
-- Offline GA default training resumed from the latest checkpoint and accepted a frozen best genome at generation 99.
-- Final offline GA artifact: `best_genome.json`, genome id `offline_5_0000l5`, reported fitness `0.742401678240735`, generation discovered `5`.
-- Final validation used an 80% threshold with 20 fights per baseline. Win rates were Lynx 100%, Bandit 100%, Crane 100%, Hermit 100%, Widow 100%, Butcher 100%, Shogun 100%, and Titan 85%.
-- Checkpoint output now contains 100 generation checkpoint files plus `data/offline-ga-checkpoints/latest.json`.
-- Director combat tests pass.
-- Lint exits successfully with three existing warnings about unused ESLint-disable comments in research/simulator files.
-- Full TypeScript project checking with `bunx tsc --noEmit` currently fails due to pre-existing wider repo issues: missing websocket dependencies in examples, older script/type mismatches, legacy AI export references, hazard config typing mismatches, private method access in older engine code paths, particle union mismatch, and Bun test type resolution.
+## 4. The adaptive loop (what actually adapts)
 
-## 16. Current limitations and risks
+1. `MatchDebriefPanel` mounts after a match.
+2. `computeAIDebrief` derives a deterministic player model (grade + archetype +
+   traits) from the engine snapshot.
+3. A `post_match_analysis` context is POSTed to `/api/ai/director`. If
+   `ETERNAL_MODEL_ENDPOINT` is set and responds within 12s, Qwen returns an
+   intent + reasoning used for the written paragraph and a genome-style hint
+   (`selectGenomeStyleFromIntent`). Otherwise `selectGenomeStyleFromLocal(ai)`
+   picks the style deterministically (`qwenStatus: "local"`).
+4. `champions/{style}.json` is fetched and staged via `engine.setChampionOverride`
+   + `setUseChampionGenome(true)` — applied to the **next** opponent only (never
+   mid-combat).
+5. The panel renders: grade, player model (archetype + observations), player
+   traits, one-paragraph summary, and "Next opponent genome: <style>".
 
-- Single-player mode depends on Qwen availability. This is intentional for the current requirement, but it means a bad endpoint blocks match start.
-- Some research/script modules are not type-clean under the global tsconfig.
-- Offline GA validation now produces decisive results, but the current accepted champion benefits from using the adapter's strong default body baseline; tune the baseline body separately if the product goal is behaviour-only dominance with weaker body stats.
-- `.env` contains local secrets/config and should not be committed.
-- The repository contains both active gameplay code and experimental research code; not every module is part of the live UI path.
-- The deleted `public/audio/steel_on_the_riverbank.mp3` indicates the current build leans on procedural/fixed audio paths rather than that older track.
+This satisfies the project goal of *"select a genome after rounds and do
+analysis shown after each round"* — it is rule-based with an optional LLM assist.
 
-## 17. Recommended next steps
+---
 
-1. Add a visible retry/reconfigure CTA when Qwen is unavailable.
-2. Split experimental scripts/examples from production `tsconfig` or add separate tsconfigs.
-3. Add integration tests for offline GA validation so headless fights cannot regress into all-draw outcomes.
-4. Add integration tests for intro gating and Director fallback behavior.
-5. Add a small health-check endpoint for the Modal model.
-6. Document the expected Qwen intent JSON schema beside the Modal deployment docs.
-7. Decide whether the Qwen-specific README/report should remain separate or be merged into these primary documents.
+## 5. Offline tooling (REAL, not gameplay)
 
-## 18. Conclusion
+These modules compile and are exercised by `scripts/*.ts` and research
+harnesses, but are **not** on the runtime path:
 
-Eternal is now more than a static fighting prototype. It has a playable combat loop, cinematic presentation, authored and evolved AI opponents, and a live external model directing match tone and behavior. The most important current behavioral guarantee is that single-player combat does not begin until Qwen has produced a validated live plan, and that plan changes both the encounter atmosphere and the opponent's actual combat decisions.
+- `evolution/` — `GenomeDirector`, `GenomeLibrary`, `FrozenGenomeLibrary`,
+  `EvolutionManager`, `CrossoverEngine`, `MutationEngine`, `SelectionStrategy`,
+  `Population`, `SimulationRunner`, `SelfPlayRunner`, `FitnessEvaluator`,
+  `DatasetLogger`, `ConvergenceDetector`, `GenealogyEngine`,
+  `NarrativeTraitEngine`, `ResearchReport*`. Note `GenomeDirector.selectGenome`
+  is **not** called by the runtime; the live next-genome pick reads
+  `champions/{style}.json` directly via the route.
+- `offline-ga/` — `OfflineEvolutionTrainer`, `Fitness`, `Selection`,
+  `CheckpointStore`, `SimulatorAdapter`. Only `train-offline-ga.ts` is wired into
+  `package.json` (`train:offline-ga`).
+- `simulator/` — `HeadlessEngine`, `SimulationRunner`, `BatchExecutor`,
+  `BenchmarkSuite`, `MatchTypes`, `ExperimentManager`, `DatasetSink`. Headless
+  only; the browser uses the real `engine.ts`, not `HeadlessEngine`.
+- `research/` — `EvaluationHarness` (references `DirectorEngineV3/V5`,
+  `GameDesignDatasetLogger`), `Dashboard`, `LargeScaleBench`, `MatchupMatrix`,
+  `ExperimentTracker`.
+- `gamedesigner/` — `GameDesigner`, `GameDesignerPipeline` (instantiates
+  `DirectorEngineV4`), `IntentGameDesigner`, `GameDesignContextBuilder`,
+  `GameDesignDatasetLogger`, `TrainingReadinessExporter`, etc. This is the
+  **training-time** pipeline that *produces* the fine-tuned model served by
+  `ETERNAL_MODEL_ENDPOINT`. It is not imported by the runtime or the live routes.
+- `intent/` — `MassiveDatasetGenerator` (instantiates `DirectorEngineV3/V5`),
+  `DatasetBuildOrchestrator`, `IntentSchema`, `IntentTranslator`,
+  `IntentContextBuilder`. Dataset-generation tooling; only `IntentOutputValidator`
+  is live.
+- `training/`, `active/`, `distillation/`, `prediction/`, `profiler/`, `world/`,
+  `campaign/`, `narrative/` — helper trees feeding dataset/research tooling.
+
+### Scripts (offline)
+Only `train-offline-ga.ts` is referenced by `package.json`. The other 19 scripts
+(`build-intent-dataset`, `evolve-champion`, `evolve-library`, `evolve-widow`,
+`freeze-genomes`, `ga-vs-ga`, `generate-*`, `run-*`, `smoke-test-*`, `verify-e2e`)
+are runnable manually but are not wired into npm scripts and are not invoked by
+the runtime.
+
+---
+
+## 6. Dead / unused code
+
+- **Components never mounted:** `EvolutionPanel.tsx`,
+  `DirectorActionVisualizer.tsx`, `DirectorIntentCard.tsx`.
+- **Dormant in-combat Director methods:** `engine.setDirectorThinking`,
+  `engine.applyAIIntent`, `engine.setDirectorFallback` (no callers).
+- `DirectorEngineV1` base + `DirectorEngineV2/V3/V4/V5` are only used by the
+  offline `gamedesigner`/`intent`/`research` tooling — not by the live game.
+
+---
+
+## 7. Artifacts & non-source directories
+
+- `best_genome.json`, `ChampionGenome.json`, `EvolutionReport.json` — generated
+  artifacts (offline GA / evolve scripts).
+- `examples/`, `paper/`, `modal/` (deploy script only), `mini-services/`,
+  `download/`, `eval_results/`, `tool-results/`, `agent-ctx/`, `data/` — docs,
+  reports, and research outputs; not imported by the runtime.
+- `tests/` — Bun test suites (e.g. `tests/director`).
+- `docs/` — secondary guides and reports.
+
+---
+
+## 8. How to read this for contribution
+
+- To change **combat feel / Director presentation**, edit `engine.ts`,
+  `ai.ts`, `director/DirectorRuntime.ts`, `config/*`, and the live `Director*`
+  / `AI*` components.
+- To change **how the opponent adapts between matches**, edit
+  `postMatchAnalysis.ts`, `directorJournal.ts`, `MatchDebriefPanel.tsx`, and the
+  `champions/*.json` genomes.
+- To change **the trained model or datasets**, work in `scripts/`,
+  `evolution/`, `offline-ga/`, `simulator/`, `gamedesigner/`, `intent/`,
+  `training/` — these never affect the deployed game unless you re-train and
+  redeploy `modal/modal_inference.py` and point `ETERNAL_MODEL_ENDPOINT` at it.
