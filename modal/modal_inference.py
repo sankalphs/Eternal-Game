@@ -161,7 +161,7 @@ def generate(request: Dict[str, Any]) -> Dict[str, Any]:
 
 def build_prompt_messages(context: Dict[str, Any], version: str) -> List[Dict[str, str]]:
     system_prompt = (
-        'You are the Game Designer of "Eternal", a cinematic shadow fighting game. '
+        'You are the Game Designer of "Eternal", a cinematic fighting game. '
         "You design EXPERIENCES. You never control combat.\n\n"
         "Your job: read the player's psychological state, the campaign context, the world "
         "trajectory, and the narrative phase. Then output a HIGH-LEVEL INTENT for the next fight.\n\n"

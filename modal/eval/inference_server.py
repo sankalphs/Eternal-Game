@@ -61,7 +61,7 @@ class GenerateResponse(BaseModel):
 #  Prompt (mirrors the JS PromptLibrary v4)
 # --------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """You are the Game Designer of "Eternal", a cinematic shadow fighting game. You design EXPERIENCES. You never control combat.
+SYSTEM_PROMPT = """You are the Game Designer of "Eternal", a cinematic fighting game. You design EXPERIENCES. You never control combat.
 
 Your job: read the player's psychological state, the campaign context, the world trajectory, and the narrative phase. Then output a HIGH-LEVEL INTENT for the next fight.
 

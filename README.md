@@ -101,7 +101,7 @@ src/app/
   api/ai/llm-info/route.ts        Model/info endpoint
 
 src/components/game/
-  ShadowFight.tsx                 Main game shell, canvas loop, input, menus
+  EternalGame.tsx                Main game shell, canvas loop, input, menus
   StoryIntro.tsx                  Opening cinematic
   DestructionEnding.tsx           Ending sequence
   Director*.tsx                   Director UI panels and live visualizers
@@ -262,7 +262,7 @@ Latest full run status, July 2, 2026:
 
 ## Qwen Director flow
 
-1. The UI starts a match path in `ShadowFight.tsx`.
+1. The UI starts a match path in `EternalGame.tsx`.
 2. The engine enters `intro`.
 3. `requestAIDirector()` posts match context to `/api/ai/director` (aborts after ~4s).
 4. The route handler forwards context to `ETERNAL_MODEL_ENDPOINT`.

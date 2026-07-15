@@ -38,7 +38,7 @@ The player is the shadow/villain, not the savior. Opponents are the last Sealers
 ## 3. Runtime architecture
 
 ```text
-React / ShadowFight.tsx
+React / EternalGame.tsx
   owns canvas refs, input, UI overlays, menu flow, Director requests
         |
         v
@@ -171,7 +171,7 @@ The AI can approach, retreat, block, wait, zone, punish whiffs, anti-air jumps, 
 
 ### Request path
 
-`ShadowFight.tsx` calls `/api/ai/director` with current context:
+`EternalGame.tsx` calls `/api/ai/director` with current context:
 
 - opponent identity,
 - chapter index,

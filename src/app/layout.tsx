@@ -14,15 +14,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Eternal — The Shadow's Ascension",
-  description: "A cinematic 2D shadow fighting game. You are the villain. Eight sealers stand in your way.",
-  keywords: ["Shadow Fight", "fighting game", "martial arts", "canvas game", "Next.js"],
+  description: "A cinematic 2D fighting game. You are the villain. Eight sealers stand in your way.",
+  keywords: ["Eternal", "fighting game", "martial arts", "canvas game", "Next.js"],
   authors: [{ name: "Z.ai" }],
   icons: {
     icon: "/icon.svg",
   },
   openGraph: {
     title: "Eternal — The Shadow's Ascension",
-    description: "A cinematic 2D shadow fighting game. You are the villain.",
+    description: "A cinematic 2D fighting game. You are the villain.",
     url: "https://chat.z.ai",
     siteName: "Z.ai",
     type: "website",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Eternal — The Shadow's Ascension",
-    description: "A cinematic 2D shadow fighting game. You are the villain.",
+    description: "A cinematic 2D fighting game. You are the villain.",
   },
 };
 

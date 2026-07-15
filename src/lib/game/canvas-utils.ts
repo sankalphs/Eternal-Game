@@ -12,7 +12,7 @@
 //   const w = VIRTUAL_W * s;
 //   const h = VIRTUAL_H * s;
 //
-// Used by ShadowFight (game canvas), StoryIntro, and DestructionEnding to
+// Used by EternalGame (game canvas), StoryIntro, and DestructionEnding to
 // letterbox-free fit a 960×540 virtual stage into any viewport.
 export function coverScale(
   canvasW: number,

@@ -14,6 +14,7 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
   const finishedRef = useRef(false);
   const prevSceneRef = useRef<{ kind: SceneKind; t: number } | null>(null);
   const sceneAlphaRef = useRef(1); // crossfade alpha
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [time, setTime] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false);
@@ -84,6 +85,8 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
         finishedRef.current = true;
         playingRef.current = false;
         setPlaying(false);
+        const a = audioRef.current;
+        if (a) a.pause();
         window.setTimeout(onFinish, 600);
       }
       let bi = 0;
@@ -130,11 +133,18 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
     playingRef.current = true;
     setPlaying(true);
     setStarted(true);
+    const a = audioRef.current;
+    if (a) {
+      a.currentTime = 0;
+      a.play().catch(() => {});
+    }
   }, []);
 
   const skip = useCallback(() => {
     playingRef.current = false;
     setPlaying(false);
+    const a = audioRef.current;
+    if (a) a.pause();
     onFinish();
   }, [onFinish]);
 
@@ -142,11 +152,17 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
     playingRef.current = !playingRef.current;
     lastFrameRef.current = performance.now();
     setPlaying(playingRef.current);
+    const a = audioRef.current;
+    if (a) {
+      if (playingRef.current) a.play().catch(() => {});
+      else a.pause();
+    }
   }, []);
 
   return (
     <div className="fixed inset-0 bg-black overflow-hidden select-none">
       <canvas ref={canvasRef} className="block" />
+      <audio ref={audioRef} src="/audio/Blade_at_the_Gate.mp3" preload="auto" />
 
       {/* Vignette */}
       <div
@@ -200,7 +216,7 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
             style={{ textShadow: "0 0 30px rgba(180,30,20,0.85), 0 4px 16px #000" }}
           >
             <div className="text-rose-300/70 tracking-[0.4em] text-xs sm:text-sm mb-2">
-              SHADOW FIGHT
+              ETERNAL
             </div>
             <div className="text-white text-4xl sm:text-7xl font-black tracking-tight">
               {TITLE}
@@ -213,7 +229,7 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
       {!started && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm text-center px-6">
           <div className="text-rose-300/60 tracking-[0.4em] text-xs sm:text-sm mb-3">
-            SHADOW FIGHT PRESENTS
+            ETERNAL
           </div>
           <h1
             className="text-white text-4xl sm:text-6xl font-black tracking-tight mb-3"
@@ -224,7 +240,7 @@ export default function StoryIntro({ onFinish }: { onFinish: () => void }) {
           <p className="text-zinc-400 text-sm max-w-md mb-8">
             A tale in eight acts. Best experienced with sound on.
             <br />
-            <span className="text-zinc-500">2:22 · silent cinematic prologue</span>
+            <span className="text-zinc-500">2:22 · cinematic prologue</span>
           </p>
           <button
             onClick={start}

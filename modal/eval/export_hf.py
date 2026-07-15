@@ -119,7 +119,7 @@ tags:
 
 # Project Eternal — Game Designer (Intent-Only)
 
-This is a fine-tuned model for **Project Eternal**, a cinematic shadow fighting game.
+This is a fine-tuned model for **Project Eternal**, a cinematic fighting game.
 
 ## What it does
 

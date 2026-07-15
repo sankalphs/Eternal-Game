@@ -13,7 +13,7 @@
 //   - The post-battle AI Debrief (read by the MatchDebriefPanel).
 //
 // This file is the SINGLE source of truth. Components do not write to
-// it directly — they subscribe, and the engine watcher in ShadowFight
+// it directly — they subscribe, and the engine watcher in EternalGame
 // publishes into it via the small helpers below.
 //
 // All numeric/semantic values that drive the journal entries come from
@@ -292,7 +292,7 @@ const INTENT_FALLBACK_BY_INTENT: Record<string, IntentCopy> = {
 
 // ===========================================================================
 // MAIN WATCHER — pure read against `engine`.
-// Call once per RAF tick from `ShadowFight`. Cheap.
+// Call once per RAF tick from `EternalGame`. Cheap.
 // ===========================================================================
 
 interface WatcherState {
@@ -331,7 +331,7 @@ export function createDirectorWatcher(): WatcherState {
 }
 
 /**
- * Top-level watcher. Called by the RAF loop in ShadowFight. Idempotent.
+ * Top-level watcher. Called by the RAF loop in EternalGame. Idempotent.
  *
  * Strategy:
  *   1. Compare new director state names with the last seen names.

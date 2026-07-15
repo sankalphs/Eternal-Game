@@ -129,7 +129,7 @@ function emptyInput(): InputState {
   };
 }
 
-export default function ShadowFight() {
+export default function EternalGame() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fxCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);

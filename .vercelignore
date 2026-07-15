@@ -24,8 +24,6 @@ champions/*.png
 *.jpeg
 *.gif
 *.mp4
-*.mp3
-*.wav
 *.onnx
 *.pt
 *.pth

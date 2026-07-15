@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ShadowFight from "@/components/game/ShadowFight";
+import EternalGame from "@/components/game/EternalGame";
 import StoryIntro from "@/components/game/StoryIntro";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
       {showStory ? (
         <StoryIntro onFinish={() => setShowStory(false)} />
       ) : (
-        <ShadowFight />
+        <EternalGame />
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-// Shared types for the Shadow Fight 2 clone game engine.
+// Shared types for the Eternal game engine.
 
 export type Facing = 1 | -1;
 

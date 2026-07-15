@@ -29,7 +29,7 @@ into the game:
    `new RLController(rlTrainer.agent)`, spawns a Fighter for the ghost, and
    feeds `rlController.getInput(this.enemy, this.player)` into the enemy
    fighter each frame from `updateFight()`.
-2. In `src/components/game/ShadowFight.tsx`, re-import `RLTrainingPanel` from
+2. In `src/components/game/EternalGame.tsx`, re-import `RLTrainingPanel` from
    `@/experimental/rl/RLTrainingPanel` and `rlTrainer` from
    `@/experimental/rl/rl`, then re-add the menu buttons and panel render.
 3. (Optional) Define an `RL_GHOST` `OpponentDef` to set the ghost's stats

@@ -1,7 +1,7 @@
-// THE SHADOW'S ASCENSION — a storyline for the Shadow Fight intro. The player
+// THE SHADOW'S ASCENSION — a storyline for the Eternal intro. The player
 // is an ancient evil, unsealed from the Gates of Shadow. The opponents are the
 // last heroes — the Sealers — trying to cage the player once more. Eight acts
-// timed as a standalone silent cinematic prologue
+// timed as a standalone cinematic prologue
 // (141.98s ≈ 2:22). Each act is a DISTINCT painted scene that visually depicts
 // its narration — a movie, not subtitles over a static backdrop.
 
